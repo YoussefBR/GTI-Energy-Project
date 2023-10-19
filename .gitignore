@@ -1,0 +1,26 @@
+# make and build files
+*.lst
+*.o
+*.eep
+*.lss
+*.map
+*.sym
+
+# mac folder metadata 
+.DS_Store
+
+# windows metadata
+Thumbs.db
+
+# ignore compiled python files 
+*.pyc
+
+# vscode
+.vscode/
+
+# build output 
+bin/
+out/ 
+build/
+
+
