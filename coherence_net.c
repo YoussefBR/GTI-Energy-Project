@@ -1,11 +1,13 @@
 
 // struct for each individual file
-struct file {
-    struct node *nodesList;
-};
+typedef struct file {
+    Node *nodesList;
+} File;
 
 // node for each idea in file
-struct node {
+typedef struct node {
     char *concept;
-    struct node *connectNodes;
-};
+    Node *connectNodes;
+} Node;
+
+// Coherence Network Algorithm
