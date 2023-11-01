@@ -1,3 +1,4 @@
+#include <stddef.h>
 
 // node for each idea in file
 typedef struct idea_node {
@@ -12,19 +13,25 @@ typedef struct coherence_network{
 } Network;
 
 // struct representing tuple triples
-typedef struct Tuple{
+typedef struct tuple{
     char* subject;
     char* verb;
     char* object;
-} tuple;
+} Tuple;
 
 // Coherence Network Algorithm: takes list of tuples and builds best coherence network based off of that
-Network best_coherence(tuple file_tuples){
-    
+Network best_coherence(Tuple file_tuples){
+    int best_score = 0; // score of best coherence nework
+    Network best_network; // best coherence network, instantiated to central_node.concept = NULL in next line
+    best_network.central_node.concept = NULL;
+    // for each possible coherence network (brute force version)
+        // find the score
+        // if score better than best score: if(current_score > best_score) {
+            // make this network best newtork and score best score
 }
 
 // Coherence Network Scoring function: takes Network network and returns the score
-int network_score(Network network, tuple file_tuples) {
+int network_score(Network network, Tuple file_tuples) {
     int score = 0;
     return score;
 }
