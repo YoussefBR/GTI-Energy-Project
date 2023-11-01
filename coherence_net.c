@@ -11,8 +11,17 @@ typedef struct coherence_network{
     int* relatedFiles; // will need to number files to keep track of them
 } Network;
 
-// Coherence Network Algorithm: takes list of tuples and builds best coherence network based off of that
+// struct representing tuple triples
+typedef struct Tuple{
+    char* subject;
+    char* verb;
+    char* 
+} tuple;
 
+// Coherence Network Algorithm: takes list of tuples and builds best coherence network based off of that
+Network best_coherence(tuple file_tuples){
+    
+}
 
 // Coherence Network Scoring function: takes Network network and returns the score
 int network_score(Network network) {
