@@ -3,20 +3,20 @@
 // node for each idea in file
 typedef struct idea_node {
     char *concept;
-    Node *connect_nodes;
+    struct idea_node *connect_nodes;
 } Node;
 
 // struct for potential coherence network
 typedef struct coherence_network{
     Node central_node;
-    int* relatedFiles; // will need to number files to keep track of them
+    int *file_id; // will need to number files to keep track of them
 } Network;
 
 // struct representing tuple triples
 typedef struct tuple{
-    char* subject;
-    char* verb;
-    char* object;
+    char *subject;
+    char *verb;
+    char *object;
 } Tuple;
 
 // Coherence Network Algorithm: takes list of tuples and builds best coherence network based off of that
