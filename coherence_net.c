@@ -20,7 +20,7 @@ typedef struct tuple{
 } Tuple;
 
 // Coherence Network Algorithm: takes list of tuples and builds best coherence network based off of that
-Network best_coherence(Tuple* file_tuples){
+Network best_coherence(Tuple *file_tuples){
     int best_score = 0; // score of best coherence nework
     Network best_network; // best coherence network, instantiated to central_node.concept = NULL in next line
     best_network.central_node.concept = NULL;
@@ -31,7 +31,7 @@ Network best_coherence(Tuple* file_tuples){
 }
 
 // Coherence Network Scoring function: takes Network network and returns the score
-int network_score(Network network, Tuple* file_tuples) {
+int network_score(Network network, Tuple *file_tuples) {
     int score = 0;
     return score;
 }
