@@ -9,7 +9,7 @@ typedef struct idea_node {
 // struct for potential coherence network
 typedef struct coherence_network{
     Node central_node;
-    int *file_id; // will need to number files to keep track of them
+    int *file_id; // list of related files, will need to number files to keep track of them
 } Network;
 
 // struct representing tuple triples
