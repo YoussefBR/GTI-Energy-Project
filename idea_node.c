@@ -68,6 +68,7 @@ int connect_nodes(Node* node1, Node* node2, double weight) {
         return -1;
     }
     return 0;
+}
 
 // Function to free a node
 void free_node(Node* node) {
