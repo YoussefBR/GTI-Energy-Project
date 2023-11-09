@@ -10,31 +10,49 @@ typedef struct idea_node {
 // struct for potential coherence network
 typedef struct coherence_network{
     Node central_node;
-    int *file_id; // list of related files, will need to number files to keep track of them
+    int file_id[]; // list of related files, will need to number files to keep track of them
 } Network;
 
 // struct representing tuple triples
-typedef struct tuple{
+typedef struct triple{
     char *subject;
     char *verb;
     char *object;
-} Tuple;
+} Triple;
 
 // determines if two nodes are positively or negatively related
 bool isPositive(char verb[]) {
     return true;
 }
 
+/*
+How we can build random coherence network:
+    1. randomly select center
+    2. randomly select node to connect to center
+    3. random chance (50%?) to connect a node to this next node
+    4. continue to randomly attempt to add on to next added node at 50% chance until fail
+    5. on fail, go back to previous unfailed node and add at 75% chance
+    6. run step 4 on new path until fail
+    7. repeat steps 5-6 until back at center
+    8. randomly add node to connect to center at 80%, stop if fail
+    9. repeat until all nodes have been added (or fail on center add)
+*/
+
+// builds random coherence network
+Network build_network() {
+
+}
+
 // Coherence Network Algorithm: takes list of tuples and builds best coherence network based off of that
-Network best_coherence(Tuple file_tuples[]){
+Network best_coherence(Triple file_triples[], int length){
     int best_score = 0; // score of best coherence nework
     Network best_network; // best coherence network, instantiated to central_node.concept = NULL in next line
     best_network.central_node.concept = NULL;
-    Tuple *postive_tuples;
-    Tuple *negative_tuples;
+    Triple *postive_triples;
+    Triple *negative_triples;
     // for each possible coherence network (brute force version)  WE NEED TO FIND A WAY TO FIND EACH POSSIBLE COHERENCE NETWORK
-    for(int i = 0; i < sizeof(file_tuples); i++) {
-        if(isPositve(file_tuples[i].verb)) {
+    for(int i = 0; i < sizeof(file_triples); i++) {
+        if(isPositve(file_triples[i].verb)) {
             
         }
     }
@@ -44,7 +62,7 @@ Network best_coherence(Tuple file_tuples[]){
 }
 
 // Coherence Network Scoring function: takes Network network and returns the score
-int network_score(Network network, Tuple *file_tuples) {
+int network_score(Network network, Triple *file_triples) {
     int score = 0;
     return score;
 }
