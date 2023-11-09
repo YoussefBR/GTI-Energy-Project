@@ -5,7 +5,7 @@
 // node for each idea in file
 typedef struct idea_node {
     char *concept;
-    struct idea_node *connect_nodes;
+    struct idea_node *connected_nodes;
 } Node;
 
 // struct for potential coherence network
@@ -30,7 +30,7 @@ bool isPositive(char verb[]) {
 Node add_node(Node *node, char concept[]){
     Node newNode;
     newNode.concept = concept;
-    node.connected_nodes = newNode;
+    newNode.connected_nodes = &node;
 }
 
 /*
@@ -38,7 +38,7 @@ How we can build random coherence network:
     1. randomly select center
     2. randomly select node to connect to center
     3. random chance (50%?) to connect a node to this next node
-    4. continue to randomly attempt to add on to next added node at 50% chance until fail
+    4. continue to randomly attempt to add on to next added node at 67% chance until fail
     5. on fail, go back to previous unfailed node and add at 75% chance
     6. run step 4 on new path until fail
     7. repeat steps 5-6 until back at center
@@ -47,7 +47,7 @@ How we can build random coherence network:
 */
 
 // builds random coherence network
-Network build_network(char *concepts[],  int num_concepts) {
+Network build_network(char *concepts[],  bool used, int num_concepts) {
     Network network;
     // randomly select center
     int rand_cent = rand() % num_concepts;
@@ -55,7 +55,7 @@ Network build_network(char *concepts[],  int num_concepts) {
     center.concept = concepts[rand_cent];
     network.central_node = center;
     int count = 1;
-    bool used [100];
+    bool used[num_concepts];
     used[rand_cent] = true;
     // randomly add nodes to center
     while(count < num_concepts) {
@@ -63,10 +63,12 @@ Network build_network(char *concepts[],  int num_concepts) {
         while(used[rand_next]) {
             int rand_next = rand() % num_concepts;
         }
-        Node next;
-
+        Node next = add_node(&center, concepts[rand_next]);
         count += 1;
+        // 2/3 chance to add randomn node on to last node
+        while(count < num_concepts && (rand() % 3) > 1) {
 
+        }
     }
 }
 
