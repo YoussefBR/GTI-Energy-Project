@@ -1,5 +1,6 @@
 #include <stddef.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 // node for each idea in file
 typedef struct idea_node {
@@ -39,8 +40,24 @@ How we can build random coherence network:
 */
 
 // builds random coherence network
-Network build_network() {
-
+Network build_network(char *concepts[],  int num_concepts) {
+    Network network;
+    // randomly select center
+    int rand_cent = rand() % num_concepts;
+    Node center;
+    center.concept = concepts[rand_cent];
+    network.central_node = center;
+    int count = 1;
+    bool used [100];
+    used[rand_cent] = true;
+    // randomly add nodes to center
+    while(count < num_concepts) {
+        int randNext = rand_cent;
+        while(used[randNext]) {
+            int randNext = rand() % num_concepts;
+        }
+        
+    }
 }
 
 // Coherence Network Algorithm: takes list of tuples and builds best coherence network based off of that
