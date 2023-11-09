@@ -26,6 +26,13 @@ bool isPositive(char verb[]) {
     return true;
 }
 
+// adds node
+Node add_node(Node *node, char concept[]){
+    Node newNode;
+    newNode.concept = concept;
+    node.connected_nodes = newNode;
+}
+
 /*
 How we can build random coherence network:
     1. randomly select center
@@ -52,11 +59,14 @@ Network build_network(char *concepts[],  int num_concepts) {
     used[rand_cent] = true;
     // randomly add nodes to center
     while(count < num_concepts) {
-        int randNext = rand_cent;
-        while(used[randNext]) {
-            int randNext = rand() % num_concepts;
+        int rand_next = rand_cent;
+        while(used[rand_next]) {
+            int rand_next = rand() % num_concepts;
         }
-        
+        Node next;
+
+        count += 1;
+
     }
 }
 
