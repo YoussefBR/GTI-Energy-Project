@@ -58,6 +58,7 @@ void next_connection(char *concepts[], int num_concepts, int *count, bool **used
     if(rand() % 2 > 0) {
         next_connection(concepts, num_concepts, count, used, rand_next, next);
     }
+    // 33% chance of continuing horizontally off of previous node
     while(&count < num_concepts && (rand() % 3) < 1) {
         next_connection(concepts, num_concepts, count, used, previous, prev_node);
     }
@@ -65,10 +66,10 @@ void next_connection(char *concepts[], int num_concepts, int *count, bool **used
 
 // builds random coherence network
 Network build_network(char *concepts[], int num_concepts) {
-    Network network;
+    Network network; // this needs to be malloced maybe?
     // randomly select center
     int rand_cent = rand() % num_concepts;
-    Node center;
+    Node center; // malloced maybe?
     center.concept = concepts[rand_cent];
     network.central_node = center;
     // tracking
@@ -82,14 +83,17 @@ Network build_network(char *concepts[], int num_concepts) {
         while(used[rand_next]) {
             int rand_next = rand() % num_concepts;
         }
-        Node next = add_node(&center, concepts[rand_next]);
+        Node next = add_node(&center, concepts[rand_next]); // not sure if this will work as far as pointers
         count += 1;
-        // 2/3 chance to add randon node on to last node
+        // 67% chance to add random node on to last node
         while(count < num_concepts && (rand() % 3) > 0) {
+            // count and used will need to be updated throughout different calls of functions so nt sure about pointer stuff there
             next_conncetion(concepts, num_concepts, &count, &used, rand_next, next);
         }
+        // 80% chance to continue
         cont = rand() % 5;
     }
+    return network
 }
 
 // Coherence Network Algorithm: takes list of tuples and builds best coherence network based off of that
