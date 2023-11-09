@@ -46,11 +46,20 @@ How we can build random coherence network:
     9. repeat until all nodes have been added (or fail on center add)
 */
 
-// adds next node and recursively calls at 50% chance, then out at 67% chance
-void next_connection(char *concepts[], int num_concepts, int *count, bool **used, int previous){
+// adds next node and recursively calls at 50% chance, then out at 50% chance
+void next_connection(char *concepts[], int num_concepts, int *count, bool **used, int previous, Node prev_node){
     int rand_next = previous;
     while(used[rand_next]) {
         int rand_next = rand() % num_concepts;
+    }
+    Node next = add_node(&prev_node, concepts[rand_next]);
+    used[rand_next] = true;
+    count += 1;
+    if(rand() % 2 > 0) {
+        next_connection(concepts, num_concepts, count, used, rand_next, next);
+    }
+    while(&count < num_concepts && (rand() % 3) < 1) {
+        next_connection(concepts, num_concepts, count, used, previous, prev_node);
     }
 }
 
@@ -77,7 +86,7 @@ Network build_network(char *concepts[], int num_concepts) {
         count += 1;
         // 2/3 chance to add randon node on to last node
         while(count < num_concepts && (rand() % 3) > 0) {
-            next_conncetion(concepts, num_concepts, &count, &used, rand_next);
+            next_conncetion(concepts, num_concepts, &count, &used, rand_next, next);
         }
         cont = rand() % 5;
     }
