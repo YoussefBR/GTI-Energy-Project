@@ -47,48 +47,43 @@ How we can build random coherence network:
 */
 
 // adds next node and recursively calls at 50% chance, then out at 50% chance
-void next_connection(char *concepts[], int num_concepts, int *count, bool **used, int previous, Node prev_node){
-    int rand_next = previous;
-    while(used[rand_next]) {
-        int rand_next = rand() % num_concepts;
-    }
-    Node next = add_node(&prev_node, concepts[rand_next]);
-    used[rand_next] = true;
-    count += 1;
+void next_connection(char *concepts[], int num_concepts, int *count, Node prev_node){
+    Node next = add_node(&prev_node, concepts[*count]);
+    *count++;
     if(rand() % 2 > 0) {
-        next_connection(concepts, num_concepts, count, used, rand_next, next);
+        next_connection(concepts, num_concepts, count, next);
     }
     // 33% chance of continuing horizontally off of previous node
     while(&count < num_concepts && (rand() % 3) < 1) {
-        next_connection(concepts, num_concepts, count, used, previous, prev_node);
+        next_connection(concepts, num_concepts, count, prev_node);
     }
 }
 
 // builds random coherence network
 Network build_network(char *concepts[], int num_concepts) {
     Network network; // this needs to be malloced maybe?
-    // randomly select center
-    int rand_cent = rand() % num_concepts;
+    // randomly mix up order of concepts added to network
+    for(int i = 0; i < num_concepts; i++) {
+        int switcher = rand() % num_concepts;
+        char *temp = concepts[i];
+        concepts[i] = concepts[switcher];
+        concepts[switcher] = temp;
+    }
+    // add center
     Node center; // malloced maybe?
-    center.concept = concepts[rand_cent];
+    center.concept = concepts[0];
     network.central_node = center;
     // tracking
     int count = 1;
-    bool used[num_concepts];
-    used[rand_cent] = true;
     // randomly add nodes to center
-    int cont = 2;
+    int cont = 2; // decides whether to continue or not at 80% chance, initialized to continue
     while(count < num_concepts && cont > 0) {
-        int rand_next = rand_cent;
-        while(used[rand_next]) {
-            int rand_next = rand() % num_concepts;
-        }
-        Node next = add_node(&center, concepts[rand_next]); // not sure if this will work as far as pointers
-        count += 1;
+        Node next = add_node(&center, concepts[count]); // not sure if this will work as far as pointers
+        count++;
         // 67% chance to add random node on to last node
         while(count < num_concepts && (rand() % 3) > 0) {
             // count and used will need to be updated throughout different calls of functions so nt sure about pointer stuff there
-            next_conncetion(concepts, num_concepts, &count, &used, rand_next, next);
+            next_conncetion(concepts, num_concepts, &count, next);
         }
         // 80% chance to continue
         cont = rand() % 5;
