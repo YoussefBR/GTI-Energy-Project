@@ -1,6 +1,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include "idea_node.h"
 
 // node for each idea in file
 typedef struct idea_node {
