@@ -8,6 +8,6 @@ char *concepts[] = {"pizza", "noodles", "pasta", "sauce", "tacos", "cheese", "be
 
 int main(void) {
     Network network = build_network(concepts, 23);
-    printf(network.central_node.concept);
+    printf("%s\n", network.central_node.concept);
     return 0;
 }
