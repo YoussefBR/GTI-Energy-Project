@@ -100,4 +100,13 @@ for triple in triples:
 # print(graded_triples)
 
 triples_by_score = sorted(graded_triples, key=get_freq, reverse=True)
-print(triples_by_score)
+# print(triples_by_score)
+with open("triples.txt", "w") as trip_file:
+    for triple, score in triples_by_score:
+        word1, word2, word3 = triple
+        triple_str = str(word1) + " " + str(word2) + " " + str(word3)
+        trip_file.write(triple_str + " " + str(score) + "\n")
+
+
+
+
