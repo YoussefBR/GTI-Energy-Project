@@ -11,12 +11,12 @@ typedef struct {
 } Edge;
 
 // Node structure
-struct node {
+typedef struct node {
     char *concept;
     Edge *edges; 
     int num_edges; 
     int edge_capacity; 
-};
+} Node;
 
 // Function to initialize a node
 Node* create_node(const char* concept) {

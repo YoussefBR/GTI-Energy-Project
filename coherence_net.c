@@ -3,14 +3,17 @@
 #include <stdio.h>
 #include "idea_node.h"
 
+/*
 // node for each idea in file
 typedef struct idea_node {
     char *concept;
     struct idea_node *connected_nodes;
 } Node;
+*/
 
 // struct for potential coherence network
 typedef struct coherence_network{
+    // Node central_node;
     Node central_node;
     int file_id[]; // list of related files, will need to number files to keep track of them
 } Network;
@@ -64,17 +67,20 @@ void next_connection(char *concepts[], int num_concepts, int *count, int order[]
 Network build_network(char *concepts[], int num_concepts) {
     Network network; // this needs to be malloced maybe?
     // randomly mix up order of concepts added to network
-    int order[num_concepts] = {0}; // tracks the order that the concepts should be used i
+    int order[num_concepts];// tracks the order that the concepts should be used i
     for(int i = 0; i < num_concepts; i++) {
+        order[i] = i;
+    }
+    for(int i = 0; i < num_concepts; i++) { //  randomly orders concepts to be added to the network
         int switcher = rand() % num_concepts;
         int temp = order[i];
         concepts[i] = order[switcher];
         concepts[switcher] = temp;
     }
     // add center
-    Node center; // malloced maybe?
-    center.concept = concepts[0];
-    network.central_node = center;
+    Node *center; // malloced maybe?
+    center = create_node(concepts[0]);
+    network.central_node = *center;
     // tracking
     int count = 1;
     // randomly add nodes to center
@@ -90,7 +96,7 @@ Network build_network(char *concepts[], int num_concepts) {
         // 80% chance to continue
         cont = rand() % 5;
     }
-    return network
+    return network;
 }
 
 // Coherence Network Algorithm: takes list of tuples and builds best coherence network based off of that
