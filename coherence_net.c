@@ -106,6 +106,8 @@ Network build_network(char *concepts[], int num_concepts) {
 
 // Coherence Network Algorithm: takes list of tuples and builds best coherence network based off of that
 Network best_coherence(Triple file_triples[], int length){
+    
+    /*
     int best_score = 0; // score of best coherence nework
     Network best_network; // best coherence network, instantiated to central_node.concept = NULL in next line
     best_network.central_node.concept = NULL;
@@ -120,6 +122,7 @@ Network best_coherence(Triple file_triples[], int length){
         // find the score: int current score = network_score(current_network, files_tuples)
         // if score better than best score: if(current_score > best_score) {
             // make this network best newtork and score best score: best_score = current_score; best_network = current_work; }
+    */
 }
 
 // Coherence Network Scoring function: takes Network network and returns the score

@@ -12,12 +12,12 @@ typedef struct {
 } Edge;
 
 // Node structure
-struct node {
+typedef struct node {
     char *concept; // Pointer to the concept string
     Edge *edges; // Dynamic array of edges
     int num_edges; // Number of edges
     int edge_capacity; // Capacity of the edges array
-};
+} Node;
 
 // Function to initialize a node with a given concept
 Node* create_node(const char* concept);
