@@ -13,7 +13,7 @@ June 2022
 Independent Statistics & Analysis  
 www.eia.gov  U.S. Department of Energy  
 Washington, DC 20585  
- 
+  
 U.S. Energy Information Administration   |   2020 RECS Technical Documentation Summary  i  
  
  
@@ -36,7 +36,7 @@ This report was prepared by the U.S. Energy Information Administration (EIA), th
 analytical agency wi thin the U.S. Department of Energy. By law, EIA’s data, analyses, and forecasts are 
 independent of approval by any other officer or employee of the United States Government. The views 
 in this report therefore should not be construed as representing those o f the  U.S. Department of Energy 
-or other federal agencies . 
+or other federal agencies .  
  
 U.S. Energy Information Administration   |   2020 RECS Technical Documentation Summary  2 Contents  
 Overview and History  .................................................................................................................................... 5 
@@ -67,13 +67,13 @@ Confidentiality of Information  ................................................
 Appendix A: Comparing preliminary and final main heating fuel,main heating equipment, and water 
 heating fuel estimates  ................................................................................................................................ 21 
  
-   
+    
  
 U.S. Energy Information Administration   |   2020 RECS Technical Documentation Summary  3 Table of Figures  
 Figure 1. 2020 Residential Energy Consumption Survey  timeline  .................................................................  6 
 Figure 2 . Unweighted and weighted self -response rates by state, 2020 RECS  .......................................... 16 
  
-   
+    
  
 U.S. Energy Information Administration   |   2020 RECS Technical Documentation Summary  4 Table  of Tables  
 Table 1. 2020 RECS relative standard error (RSE) requirements for average fuel consumption………………8  
@@ -83,7 +83,7 @@ Table A2. Main space heating equipment in U.S. homes, 2020 RECS preliminary and 
 Table A3. Main water heating fuel in U.S. homes, 2020 RECS preliminary and final estimates……………….21   
  
  
-   
+    
  
 U.S. Energy Information Administration   |   2020 RECS Technical Documentation Summary  5  
 Overview and History  
@@ -107,7 +107,7 @@ across different characteristics of homes within the residential sector.
 We collaborated with IMG -Crown and RTI International to conduct t he 2020 RECS Household Survey.  The original version of this document (published June 2022 ) reflected preliminary 20 20 RECS 
 household characteristics estimates released in early 20 22. We have revised t his document to reflect 
 updates to household characteristics data since that release. These updates include characteristics revisions based on a review of household energy billing data. Researchers who previously downloaded the preliminary microdata file o r characteristics tables should consider this release to 
-be the final, official characteristics data for the 2020 RECS.   
+be the final, official characteristics data for the 2020 RECS.    
  
 U.S. Energy Information Administration   |   2020 RECS Technical Documentation Summary  6 Figure 1. 2020 Residential Energy Consumption Survey  timeline  
  
@@ -140,7 +140,7 @@ moving to an unclustered sample design.
 • We added n ew questions  on emerging technologies and u sage behavior, and we made some 
 questionnaire changes  as a result of  the COVID -19 pandemic. The 2020 RECS added questions 
 about solar capacity and installation, electric vehicle ownership and charging behavior, and 
- 
+  
  
 U.S. Energy Information Administration   |   2020 RECS Technical Documentation Summary  7 smart speakers. Just before data collection , in response to the COVID -19 pandemic, we added 
 questions about work ing from home and whe ther anyone in the household was participating in 
@@ -181,7 +181,7 @@ RECS estimates , indicating that the final weighted 2020 RECS estimates are not 
 different from the target population  parameters . 
   
  
-1 AAPOR Response Rate Calculator 4.1   
+1 AAPOR Response Rate Calculator 4.1    
  
 U.S. Energy Information Administration   |   2020 RECS Technical Documentation Summary  8 Data Products  and Revision Policy  
 Data products  
@@ -219,7 +219,7 @@ discussed in Appendix A.
 Methodological and content changes across survey cycles  
 RECS is a  cross -sectional study, with updates to  questionnaire content, statistical methods, and 
 dissemination strategies from the previous cycle. We do not currently conduct a longitudinal, household 
-energy demand study. Each RECS, however, shares content and design elements across survey cycles.  
+energy demand study. Each RECS, however, shares content and design elements across survey cycles.   
  
 U.S. Energy Information Administration   |   2020 RECS Technical Documentation Summary  9 The unit of analysis for every RECS cycle is the occupied, pri mary housing unit . The sample is designe d, 
 using geographic and other stratification methods , using an address -based housi ng unit frame.  Most 
@@ -260,7 +260,7 @@ method .3 In other words,  if a drop -point address was selected, then  we would
 address. See McMichael, J., & Brown, D. (2018). PO Boxes on Address Based Sampling (ABS) frame: Under - or over -coverage or 
 both?  American Association for Public Opinion Research, Denver, CO.  
 3 Amaya, A.E (2017). RTI International’s Address -Based Sampling Atlas: Drop points . Research Triangle Park, NC: RTI Press. RTI 
-Press Publication No. OP -0047- 1712  
+Press Publication No. OP -0047- 1712   
  
 U.S. Energy Information Administration   |   2020 RECS Technical Documentation Summary  10 drop -point multifamily building with the same number of units as the s ubstitution . A unit in the 
 substitute building would be randomly selected as a sampling unit .  
@@ -300,7 +300,7 @@ Once we allocated this initial sample, we applied the same approach to ensure th
 requirements for each energy fuel source were met.  
 Originally,  we s pecified proposed precision requirements for propane at the national  and census region  
 levels . The se requirement s were dropped due to the need for oversampling and significant increase in  
-sample size . We determined that acceptable precision levels (between 4% and 6% at the region level)  
+sample size . We determined that acceptable precision levels (between 4% and 6% at the region level)   
  
 U.S. Energy Information Administration   |   2020 RECS Technical Documentation Summary  11 and improved quality over previous cycles  could be attained for 2020 RECS propane estimates without 
 meeting the original regional  precision requirements.  The estimation of the RSEs with the final allocated, 
@@ -340,7 +340,7 @@ Energy)
  
  
 4 The National Pilot w as a study with a nationally representative sample conducted in 2015 focusing on testing the feasibility of 
-the self- administered modes.   
+the self- administered modes.    
  
 U.S. Energy Information Administration   |   2020 RECS Technical Documentation Summary  12 Table 2. Expected completed cases, assumed yield rate, and allocated starting sample, 2020 RECS  
  
@@ -386,7 +386,7 @@ New Mexico  182 0.339  537
 New York  997 0.313  3,190 
 North Carolina  444 0.328  1,353  
 North Dakota  292 0.398  734 
-Ohio 405 0.396  1,023  
+Ohio 405 0.396  1,023   
  
 U.S. Energy Information Administration   |   2020 RECS Technical Documentation Summary  13 Oklahoma  238 0.395  602 
 Oregon  309 0.444  697 
@@ -430,7 +430,7 @@ revise the questionnaire appropriately . The content revisions typically include
 questions to account for  household technology changes or to improve response quality . For the 2020 
 RECS, new questions included information on : 
  
-• All-electric plug -in and hybrid plug-in vehicles and charging   
+• All-electric plug -in and hybrid plug-in vehicles and charging    
  
 U.S. Energy Information Administration   |   2020 RECS Technical Documentation Summary  14 • Household solar capacity   
 • Smart speakers  
@@ -475,7 +475,7 @@ For each phase, we sent a sample of addresses up to six mailings over approximat
 • Second invitation —sent to remaining eligible or open addresses 
 • Reminder letter —sent to remaining eligible  or open addresses 
 • Third invitation— sent to remaining eligible  or open addresses 
-  
+   
  
 U.S. Energy Information Administration   |   2020 RECS Technical Documentation Summary  15 Response rate and nonresponse bias  
 The overall unweighted response rate for the 20 20 RECS Household Survey  is 38.6%, and the weighted 
@@ -500,7 +500,7 @@ state because each case within a state has the same sampl e selection probabilit
 5 Completed interviews include interviews where the respondent did not answer all questions in the survey. The respondent 
 must have answered at least 7 out of 10 key RECS questions for the interview to be considered complete. Partially completed 
 interviews that did not meet that definition were defined as eligible incompletes. 
-6 See the Weighting and Sampling Error  section for more details.   
+6 See the Weighting and Sampling Error  section for more details.    
  
 U.S. Energy Information Administration   |   2020 RECS Technical Documentation Summary  16 Figure 2. Unweighted and weighted self -response rates by state, 2020 RECS  
  
@@ -567,7 +567,7 @@ Pennsylvania (617)
 Louisiana (311)
 Texas (1016)
 New Jersey (456)
-New York (904)state(number of completed cases ) 
+New York (904)state(number of completed cases )  
  
 U.S. Energy Information Administration   |   2020 RECS Technical Documentation Summary  17 • Analysis of how well the groups r epresent ed the general population  found that key 2020 RECS  
 estimates are  statistically similar to ACS and American Housing Survey (AHS)  estimates . Most 
@@ -607,7 +607,7 @@ annualized consumption and cost, and modeled end -use estimates.  More detail ab
 available  in Appendix A.  
 Item imputation  
 Item nonresponse  occurs when responden ts do not know or refuse to answer a question in the survey  or 
-when we determine a response is invalid and remove it during editing. Item imputation  is the process of  
+when we determine a response is invalid and remove it during editing. Item imputation  is the process of   
  
 U.S. Energy Information Administration   |   2020 RECS Technical Documentation Summary  18 filling in the missing responses using a statistical model to produce a complete dataset and to reduce the 
 bias associated with item nonresponse . 
@@ -649,7 +649,7 @@ Section, American Statistical Association , pp.721 –726.
 method. In Proceedings of the 2004 Joint Statistical Meetings, American Statistical Asso ciation, Section on Survey Research 
 Methods, Toronto, Ontario, Canada (pp. 4351- 4358). Alexandria, VA: American Statistical Association. [Available as a PDF at 
 http://www.amstat.org/sections/srms/proceedings /] 
-10 Formerly known as the National Climatic Data Center (NCDC).   
+10 Formerly known as the National Climatic Data Center (NCDC).    
  
 U.S. Energy Information Administration   |   2020 RECS Technical Documentation Summary  19 annualized HDD and CDD values. We also obtained t hirty -year HDD and CDD averages11 from the CDO 
 data ; however, because these normal values were pre -calculated, weighting them was not possible, so 
@@ -689,7 +689,7 @@ by benchmarking them to other sources that we  assume better represent the full 
 analysis approach. In  JSM Proceedings , pp. 1166– 1172 . American Statistical Association. 
 13 Folsom, R. E., & Singh, A. C. (2000). The generalized exponential model for sampling weight calibration for extreme values, 
 nonresponse, and poststratification. In Proceedings of the American Statistical Association, Survey Research Methods Section , 
-pp. 598 –603. Alexandria, VA: American Statistical Association.   
+pp. 598 –603. Alexandria, VA: American Statistical Association.    
  
 U.S. Energy Information Administration   |   2020 RECS Technical Documentation Summary  20 poststratification method used for 2020 RECS differed somewhat from previous RECS. We typically use 
 American Communit y Survey (ACS) estimates from the U.S. Census Bureau as population control totals. 
@@ -730,7 +730,7 @@ disclosure steps mask the data so that the public cannot identify a sampled hous
 occupants.  
   
  
-14 See How to Use the 2020 RECS Microdata File  for a complete list of top -coded variables.  
+14 See How to Use the 2020 RECS Microdata File  for a complete list of top -coded variables.   
  
 U.S. Energy Information Administration   |   2020 RECS Technical Documentation Summary  21 Appendix A . Comparing preliminary and final main heating fuel , 
 main heating equipment , and water heating fuel estimates  
@@ -783,7 +783,7 @@ units  8.25  2.74  (7.80 , 8.70)   7.65  2.83  (7.21, 8.08 )
 Built -in oil or gas 
 room heater  3.04  5.53  (2.71, 3.38)   3.49  5.37  (3.12, 3.87 ) 
 Portable electric 
-heaters  3.24  6.15  (2.84, 3.64)   3.03  6.15  (2.65 , 3.40 )  
+heaters  3.24  6.15  (2.84, 3.64)   3.03  6.15  (2.65 , 3.40 )   
  
 U.S. Energy Information Administration   |   2020 RECS Technical Documentation Summary  22 Heating stove 
 burning wood  1.98  5.76  (1.75, 2.21)   1.94  5.46  (1.73, 2.1 5) 
@@ -829,7 +829,7 @@ Regionally, the final data show a reduction in heat pumps used for main space he
 Census region, from 13.58 million heat pumps in the preliminary data to 12.52  million heat pumps in the 
 final data. The largest decreases were  in Arkansas, North Carolina, South Carolina, and Tennessee,  which 
 all had between a 4 % and 5% decrease in the number of homes that u se heat pumps for main space 
-heating.   
+heating.    
  
 U.S. Energy Information Administration   |   2020 RECS Technical Documentation Summary  23 The estimate for the number of homes in the South Census region tha t use electric furnaces for main 
 space heating  also decreased, from 10.31 million homes in the preliminary data to 9.01 million homes in 
