@@ -1,6 +1,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include "idea_node.h"
 #include "coherence_net.h"
 
