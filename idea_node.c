@@ -1,9 +1,11 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
+#include "idea_node.h"
 
-typedef struct node Node; 
+//typedef struct node Node; 
 
+/*
 // Edge structure
 typedef struct {
     Node *node; 
@@ -17,6 +19,7 @@ typedef struct node {
     int num_edges; 
     int edge_capacity; 
 } Node;
+*/
 
 // Function to initialize a node
 Node* create_node(const char* concept) {
