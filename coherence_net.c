@@ -83,6 +83,7 @@ Network *build_network(char *concepts[], int num_concepts) {
     for(int i = 0; i < num_concepts; i++) {
         order[i] = i;
     }
+    srand(time(0));
     for(int i = 0; i < num_concepts; i++) { //  randomly orders concepts to be added to the network
         int switcher = rand() % num_concepts;
         int temp = order[i];
