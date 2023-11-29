@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "idea_node.h"
+#include "coherence_net.h"
 
 /*
 // node for each idea in file
@@ -11,19 +12,23 @@ typedef struct idea_node {
 } Node;
 */
 
+/*
 // struct for potential coherence network
 typedef struct coherence_network{
     // Node central_node;
     Node central_node;
     int file_id[]; // list of related files, will need to number files to keep track of them
 } Network;
+*/
 
+/*
 // struct representing tuple triples
 typedef struct triple{
     char *subject;
     char *verb;
     char *object;
 } Triple;
+*/
 
 // determines if two nodes are positively or negatively related
 bool isPositive(char verb[]) {
@@ -56,20 +61,22 @@ How we can build random coherence network:
 void next_connection(char *concepts[], int num_concepts, int *count, int order[], Node *prev_node, double weight){
     Node *next = create_node(concepts[order[*count]]); // add_node(&prev_node, concepts[order[*count]]);
     connect_nodes(prev_node, next, weight);
-    *count++;
+    (*count)++;
     if(rand() % 2 > 0) {
         next_connection(concepts, num_concepts, count, order, next, weight * .9);
     }
     // 33% chance of continuing horizontally off of previous node
-    while(&count < num_concepts && (rand() % 3) < 1) {
+    while(*count < num_concepts && (rand() % 3) < 1) {
         next_connection(concepts, num_concepts, count, order, prev_node, weight);
     }
+    return;
 }
 
 // builds random coherence network
-Network build_network(char *concepts[], int num_concepts) {
-    Network network; // this needs to be malloced maybe?
+Network *build_network(char *concepts[], int num_concepts) {
+    Network *network; // this needs to be malloced maybe?
     // randomly mix up order of concepts added to network
+    
     int order[num_concepts];// tracks the order that the concepts should be used i
     for(int i = 0; i < num_concepts; i++) {
         order[i] = i;
@@ -77,13 +84,13 @@ Network build_network(char *concepts[], int num_concepts) {
     for(int i = 0; i < num_concepts; i++) { //  randomly orders concepts to be added to the network
         int switcher = rand() % num_concepts;
         int temp = order[i];
-        concepts[i] = order[switcher];
-        concepts[switcher] = temp;
+        order[i] = order[switcher];
+        order[switcher] = temp;
     }
     // add center
     Node *center; // malloced maybe?
-    center = create_node(concepts[0]);
-    network.central_node = *center;
+    center = create_node(concepts[order[0]]);
+    network->central_node = center;
     // tracking
     int count = 1;
     // randomly add nodes to center
@@ -105,7 +112,7 @@ Network build_network(char *concepts[], int num_concepts) {
 }
 
 // Coherence Network Algorithm: takes list of tuples and builds best coherence network based off of that
-Network best_coherence(Triple file_triples[], int length){
+//Network best_coherence(Triple file_triples[], int length){
     
     /*
     int best_score = 0; // score of best coherence nework
@@ -123,7 +130,7 @@ Network best_coherence(Triple file_triples[], int length){
         // if score better than best score: if(current_score > best_score) {
             // make this network best newtork and score best score: best_score = current_score; best_network = current_work; }
     */
-}
+//}
 
 // Coherence Network Scoring function: takes Network network and returns the score
 int network_score(Network network, Triple *file_triples) {
