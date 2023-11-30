@@ -68,9 +68,19 @@ int connect_nodes(Node* node1, Node* node2, double weight) {
         return -1;
     }
     return 0;
+}
 
 // Function to free a node
 void free_node(Node* node) {
+    free(node->edges);
+    free(node->concept);
+    free(node);
+}
+
+// Free all nodes attached to the current node
+void free_network(Node* node) {
+    // get any attached nodes and then recursively call free_network on those
+    // 
     free(node->edges);
     free(node->concept);
     free(node);

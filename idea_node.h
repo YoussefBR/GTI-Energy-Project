@@ -1,5 +1,5 @@
-#ifndef GRAPH_H
-#define GRAPH_H
+#ifndef idea_node
+#define idea_node
 
 #include <stddef.h>
 
@@ -23,6 +23,7 @@ struct node {
 Node* create_node(const char* concept);
 
 // Function to add an edge to a node
+// might not need this function for the project 
 int add_edge(Node* from, Node* to, double weight);
 
 // Function to connect two nodes bidirectionally
