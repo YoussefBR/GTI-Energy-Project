@@ -46,6 +46,11 @@ Node add_node(Node *node, char concept[]){
 }
 */
 
+// frees all memory from network
+void free_network(Network *network) {
+    return;
+}
+
 /*
 How we can build random coherence network:
     1. randomly select center
