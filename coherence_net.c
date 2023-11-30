@@ -69,7 +69,7 @@ void next_connection(char *concepts[], int num_concepts, int *count, int order[]
     Node *next = create_node(concepts[order[*count]]); // add_node(&prev_node, concepts[order[*count]]);
     connect_nodes(prev_node, next, weight);
     (*count)++;
-    if(rand() % 2 > 0) {
+    if(*count < num_concepts && (rand() % 2) > 0) {
         next_connection(concepts, num_concepts, count, order, next, weight * .9);
     }
     // 33% chance of continuing horizontally off of previous node

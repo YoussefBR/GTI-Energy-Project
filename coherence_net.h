@@ -21,10 +21,7 @@ typedef struct triple{
 bool isPositive(char verb[]);
 
 // frees all memory from network
-void free_network(Network *network) {
-    
-    return;
-}
+void free_network(Network *network);
 
 // adds next node and recursively calls at 50% chance, then out at 50% chance
 void next_connection(char *concepts[], int num_concepts, int *count, int order[], Node *prev_node, double weight);
