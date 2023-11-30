@@ -7,7 +7,7 @@
 typedef struct coherence_network{
     // Node central_node;
     Node *central_node;
-    int file_id[]; // list of related files, will need to number files to keep track of them
+    //int file_id[]; // list of related files, will need to number files to keep track of them
 } Network;
 
 // struct representing tuple triples
@@ -19,10 +19,15 @@ typedef struct triple{
 
 // determines if two nodes are positively or negatively related
 bool isPositive(char verb[]);
+
+// frees all memory from network
+void free_network(Network *network) {
+    
+    return;
+}
+
 // adds next node and recursively calls at 50% chance, then out at 50% chance
 void next_connection(char *concepts[], int num_concepts, int *count, int order[], Node *prev_node, double weight);
-
-int sp();
 
 // builds random coherence network
 Network *build_network(char *concepts[], int num_concepts);
