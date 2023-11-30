@@ -101,12 +101,17 @@ for triple in triples:
 
 triples_by_score = sorted(graded_triples, key=get_freq, reverse=True)
 # print(triples_by_score)
+filtered_triples_scored = []
+for triple, score in triples_by_score:
+    if "recs" not in triple:
+        filtered_triples_scored.append((triple, score))
+print(filtered_triples_scored)
+
+gt_length = len(triples_by_score)
 with open("triples.txt", "w") as trip_file:
+    trip_file.write(str(gt_length) + "\n")
     for triple, score in triples_by_score:
         word1, word2, word3 = triple
         triple_str = str(word1) + " " + str(word2) + " " + str(word3)
         trip_file.write(triple_str + " " + str(score) + "\n")
-
-
-
 
