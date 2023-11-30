@@ -8,7 +8,8 @@ class coherence_network:
 
     def score():
         return
-    
+
+# adds next node and recursively calls at 50% chance, then out at 50% chance
 def next_connection(concepts, num_concepts, count, order, prev_concept, weight, G):
     next_concept = concepts[order[count[0]]]
     G.add_node(next_concept)
@@ -23,6 +24,7 @@ def next_connection(concepts, num_concepts, count, order, prev_concept, weight, 
     while count[0] < num_concepts and random.random() < 0.33:
         next_connection(concepts, num_concepts, count, order, prev_concept, weight, G)
 
+# builds random coherence network from given concepts
 def build_network(concepts, num_concepts):
     G = nx.Graph()
 
@@ -55,3 +57,7 @@ def build_network(concepts, num_concepts):
         cont = random.randint(0, 4)
 
     return co_net
+
+# scores coherence of network 
+def score(network):
+    return 0
