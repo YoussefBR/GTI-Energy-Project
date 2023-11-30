@@ -32,4 +32,15 @@ int connect_nodes(Node* node1, Node* node2, double weight);
 // Function to free a node
 void free_node(Node* node);
 
+// Free all nodes attached to the current node
+void free_network(Node* node);
+
+void print_edge_weights(const Node* node);
+
+static void dfs(Node* node, Node*** visited_nodes, int* visited_count, int* capacity);
+
+void print_connected_nodes(const Node* node);
+
+void free_network(Node* start_node);
+
 #endif // GRAPH_H
