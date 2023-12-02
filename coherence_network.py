@@ -79,7 +79,7 @@ def find_best_network(triples):
     best_network = None
     best_score = 0
     # find best coherence network
-    for x in range(50)
+    for x in range(50):
         network = build_network(concepts, len(concepts))
         score = score(network, triple.frequencies)
         if score > best_score:
