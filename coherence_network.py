@@ -59,5 +59,13 @@ def build_network(concepts, num_concepts):
     return co_net
 
 # scores coherence of network 
-def score(network):
-    return 0
+def score(network, frequencies):
+    score = 0
+    # assuming frequencies is dictionary such that {(concept1, concept2) : frequency_of_ideas_in_triples}, score becomes sum of freuencies with wieght based on how far from center
+    for edge in network.graph.edges:
+        node1, node2 = edge
+        if (node1, node2) in frequencies:
+            score += edge.weight * frequencies[(node1, node2)]
+        if (node2, node1) in frequencies:
+            score += edge.weight * frequencies[(node2, node1)]
+    return score
