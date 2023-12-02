@@ -59,30 +59,147 @@ def build_network(concepts, num_concepts):
     return co_net
 
 # scores coherence of network 
-def score(network, frequencies):
+def netwowk_score(network, frequencies):
     score = 0
     # assuming frequencies is dictionary such that {(concept1, concept2) : frequency_of_ideas_in_triples}, score becomes sum of freuencies with wieght based on how far from center
     for edge in network.graph.edges:
         node1, node2 = edge
         if (node1, node2) in frequencies:
-            score += edge.weight * frequencies[(node1, node2)]
+            score += network.graph[node1][node2]['weight'] * frequencies[(node1, node2)]
         if (node2, node1) in frequencies:
-            score += edge.weight * frequencies[(node2, node1)]
+            score += network.graph[node1][node2]['weight'] * frequencies[(node2, node1)]
     return score
 
-#finds teh best coherence network by randomlmy generating networks based off the triples, scoring them on their coherence and optimzing the best one with the genetic algorithm
-def find_best_network(triples):
+# adds edge to graph given tuple of 2 nodes
+def add_t_edge(G, nodes):
+    node1, node2 = nodes
+    G.add_node(node1)
+    G.add_node(node2)
+    G.add_edge(node1, node2, weight = 0)
+
+# helper function that recursively calls for give_weights
+def rec_weights(G, node, prev_node, weight):
+    for edge in G.edges(node):
+        n1, n2 = edge
+        if not (n1 == prev_node or n2 == prev_node):
+            if G[n1][n2]['weight'] < weight:
+                G[n1][n2]['weight'] = weight
+                # find weights for next node
+                if n1 == node:
+                    rec_weights(G, n2, node, weight * .9)
+                else:
+                    rec_weights(G, n1, node, weight * .9)
+    return
+
+# give weights to edges based on location in network
+def give_weights(network):
+    for edge in network.graph.edges(network.center):
+        n1, n2 = edge
+        network.graph[n1][n2]['weight'] = 1
+        # find weights for connceted nodes
+        if n1 == network.center:
+            rec_weights(network.graph, n2, network.center, .9)
+        else:
+            rec_weights(network.graph, n1, network.center, .9)
+    return
+
+# does crossover of networks
+def crossover(parent1, parent2):
+    G1 = nx.Graph()
+    G2 = nx.Graph()
+    edges1 = []
+    edges2 = []
+    for edge in parent1.graph.edges():
+        edges1.append(edge)
+    for edge in parent2.graph.edges():
+        edges2.append(edge)
+    # add first center edge to each to ensure center is carried correctly
+    len1 = len(edges1)
+    len2 = len(edges2)
+    add_t_edge(G1, edges1[0])
+    add_t_edge(G2, edges2[0])
+    # add edges 80% p1->c1 and p2->c2 for each edge and 20% chance p1->c2 and p2->c1
+    if len1 > len2:
+        for x in range(1, len2):
+            if random.random() > .2:
+                add_t_edge(G1, edges1[x])
+                add_t_edge(G2, edges2[x])
+            else:
+                add_t_edge(G1, edges2[x])
+                add_t_edge(G2, edges1[x])
+        # after all nodes in shorter graph used
+        for x in range(len2, len1):
+            if random.random() > .2:
+                add_t_edge(G1, edges1[x])
+            else:
+                add_t_edge(G2, edges1[x])
+    else:
+        for x in range(1, len1):
+            if random.random() > .2:
+                add_t_edge(G1, edges1[x])
+                add_t_edge(G2, edges2[x])
+            else:
+                add_t_edge(G1, edges2[x])
+                add_t_edge(G2, edges1[x])
+        # after all nodes in shorter graph used
+        for x in range(len2, len1):
+            if random.random() > .2:
+                add_t_edge(G2, edges2[x])
+            else:
+                add_t_edge(G1, edges2[x])
+    child1 = coherence_network(G1, parent1.center)
+    child2 = coherence_network(G2, parent2.center)
+    give_weights(child1)
+    give_weights(child2)
+    return(child1, child2)
+
+#finds the best coherence network by randomlmy generating networks based off the triples, scoring them on their coherence and optimzing the best one with the genetic algorithm
+def find_best_network(triples, frequencies):
     # make a list of concepts
     concepts = []
     for triple in triples:
-        concepts.append(triple.subject)
+        if triple.subject not in concepts:
+            concepts.append(triple.subject)
+        if triple.object not in concepts:
+            concepts.append(triple.object)
+    # find best coherence network
     best_network = None
     best_score = 0
-    # find best coherence network
-    for x in range(50):
-        network = build_network(concepts, len(concepts))
-        score = score(network, triple.frequencies)
-        if score > best_score:
-            best_network = network
-            best_score = score
-    return best_network
+    first = True
+    networks = [] # tracks networks and score
+    for x in range(1000):
+        # fills out preiouvsly held 40 networks
+        if first:
+            for y in range(40):
+                for z in range(3):
+                    network = build_network(concepts, len(concepts))
+                    score = netwowk_score(network, frequencies)
+                    if score > best_score:
+                        best_network = network
+                        best_score = score
+                networks.append((best_network, best_score))
+                best_score = 0
+        # finds 10 new coherence networks
+        for y in range(10):
+            for z in range(3):
+                network = build_network(concepts, len(concepts))
+                score = netwowk_score(network, frequencies)
+                if score > best_score:
+                    best_network = network
+                    best_score = score
+            networks.append((best_network, best_score))
+            best_score = 0
+        random.shuffle(networks)
+        # crossover
+        next = []
+        for y in range(25):
+            children = crossover(networks[2 * y][0], networks[(2 * y) + 1][0])
+            next.append(children[0])
+            next.append(children[1])
+        # find best 40 to cotinue next iteration
+        networks = []
+        for co_net in next:
+            networks.append((co_net, netwowk_score(co_net, frequencies)))
+        networks = sorted(networks, key=lambda x: x[1])
+        networks = networks[10:]
+    return networks[39]
