@@ -69,3 +69,7 @@ def score(network, frequencies):
         if (node2, node1) in frequencies:
             score += edge.weight * frequencies[(node2, node1)]
     return score
+
+#finds teh best coherence network by randomlmy generating networks based off the triples, scoring them on their coherence and optimzing the best one with the genetic algorithm
+def find_best_network(triples):
+    return 0
