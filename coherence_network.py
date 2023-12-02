@@ -72,4 +72,17 @@ def score(network, frequencies):
 
 #finds teh best coherence network by randomlmy generating networks based off the triples, scoring them on their coherence and optimzing the best one with the genetic algorithm
 def find_best_network(triples):
-    return 0
+    # make a list of concepts
+    concepts = []
+    for triple in triples:
+        concepts.append(triple.subject)
+    best_network = None
+    best_score = 0
+    # find best coherence network
+    for x in range(50)
+        network = build_network(concepts, len(concepts))
+        score = score(network, triple.frequencies)
+        if score > best_score:
+            best_network = network
+            best_score = score
+    return best_network
