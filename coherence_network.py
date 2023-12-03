@@ -18,7 +18,7 @@ def next_connection(concepts, num_concepts, count, order, prev_concept, weight, 
     count[0] += 1
 
     if count[0] < num_concepts and random.random() > 0.5:
-        next_connection(concepts, num_concepts, count, order, next_concept, weight * 0.9, G)
+        next_connection(concepts, num_concepts, count, order, next_concept, weight * 0.5, G)
 
     # 33% chance of continuing horizontally off the previous node
     while count[0] < num_concepts and random.random() < 0.33:
@@ -51,7 +51,7 @@ def build_network(concepts, num_concepts):
 
         # 67% chance to add a random node onto the last node
         while count[0] < num_concepts and random.random() > 0.33:
-            next_connection(concepts, num_concepts, count, order, next_concept, 0.9, G)
+            next_connection(concepts, num_concepts, count, order, next_concept, 0.7, G)
 
         # 80% chance to continue
         cont = random.randint(0, 4)
@@ -86,9 +86,9 @@ def rec_weights(G, node, prev_node, weight):
                 G[n1][n2]['weight'] = weight
                 # find weights for next node
                 if n1 == node:
-                    rec_weights(G, n2, node, weight * .9)
+                    rec_weights(G, n2, node, weight * .5)
                 else:
-                    rec_weights(G, n1, node, weight * .9)
+                    rec_weights(G, n1, node, weight * .5)
     return
 
 # give weights to edges based on location in network
@@ -98,9 +98,9 @@ def give_weights(network):
         network.graph[n1][n2]['weight'] = 1
         # find weights for connceted nodes
         if n1 == network.center:
-            rec_weights(network.graph, n2, network.center, .9)
+            rec_weights(network.graph, n2, network.center, .5)
         else:
-            rec_weights(network.graph, n1, network.center, .9)
+            rec_weights(network.graph, n1, network.center, .5)
     return
 
 # does crossover of networks
@@ -170,8 +170,8 @@ def find_best_network(triples, frequencies):
     for x in range(1000):
         # fills out preiouvsly held 40 networks
         if first:
-            for y in range(40):
-                for z in range(3):
+            for y in range(80):
+                for z in range(5):
                     network = build_network(concepts, len(concepts))
                     score = netwowk_score(network, frequencies)
                     if score > best_score:
@@ -180,8 +180,8 @@ def find_best_network(triples, frequencies):
                 networks.append((best_network, best_score))
                 best_score = 0
         # finds 10 new coherence networks
-        for y in range(10):
-            for z in range(3):
+        for y in range(20):
+            for z in range(5):
                 network = build_network(concepts, len(concepts))
                 score = netwowk_score(network, frequencies)
                 if score > best_score:
@@ -192,7 +192,7 @@ def find_best_network(triples, frequencies):
         random.shuffle(networks)
         # crossover
         next = []
-        for y in range(25):
+        for y in range(50):
             children = crossover(networks[2 * y][0], networks[(2 * y) + 1][0])
             next.append(children[0])
             next.append(children[1])
@@ -201,5 +201,5 @@ def find_best_network(triples, frequencies):
         for co_net in next:
             networks.append((co_net, netwowk_score(co_net, frequencies)))
         networks = sorted(networks, key=lambda x: x[1])
-        networks = networks[10:]
-    return networks[39]
+        networks = networks[20:]
+    return networks[79]
