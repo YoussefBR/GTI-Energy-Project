@@ -6,9 +6,6 @@ class coherence_network:
         self.graph = graph
         self.center = center
 
-    def score():
-        return
-
 # adds next node and recursively calls at 50% chance, then out at 50% chance
 def next_connection(concepts, num_concepts, count, order, prev_concept, weight, G):
     next_concept = concepts[order[count[0]]]
@@ -51,7 +48,7 @@ def build_network(concepts, num_concepts):
 
         # 67% chance to add a random node onto the last node
         while count[0] < num_concepts and random.random() > 0.33:
-            next_connection(concepts, num_concepts, count, order, next_concept, 0.7, G)
+            next_connection(concepts, num_concepts, count, order, next_concept, 0.5, G)
 
         # 80% chance to continue
         cont = random.randint(0, 4)

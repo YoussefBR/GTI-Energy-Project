@@ -19,51 +19,52 @@ import random as rm
 #co_net = cn.build_network(["tacos", "cheese", "pizza", "spagehti", "oranges", "tamaoto sauce", "beans", "trash", "jelly", "snacks", "meat", "carrots", "candy", "pasta", "evil"], 15)
 
 class triple:
-     def __init__(self, subject, object, frequency):
+     def __init__(self, subject, verb, object, frequency):
         self.subject = subject
+        self.verb = verb
         self.object = object
         self.frequency = frequency
 
 # random generation of triples and frequencies
 l = ["tacos", "cheese", "pizza", "spagehti", "oranges", "tamaoto sauce", "beans", "trash", "jelly", "snacks", "meat", "carrots", "candy", "pasta", "evil", "food"]
 triples = []
-frequencies ={}
+frequencies = {}
 for x in range(50):
     rand_num1 = rm.randint(0,15)
     rand_num2 = rand_num1
     while rand_num1 == rand_num2:
         rand_num2 = rm.randint(0,15)
     frequency = rm.randint(1,50)
-    triples.append(triple(l[rand_num1], l[rand_num2], frequency))
+    triples.append(triple(l[rand_num1], "is", l[rand_num2], frequency))
     frequencies[(l[rand_num1], l[rand_num2])] = frequency
 
-triples.append(triple("cheese", "pizza", 100))
+triples.append(triple("cheese", "is", "pizza", 100))
 frequencies["cheese", "pizza"] = 100
-triples.append(triple("spagehti", "tamaoto sauce", 100))
+triples.append(triple("spagehti", "is", "tamaoto sauce", 100))
 frequencies["spagehti", "tamaoto sauce"] = 100
-triples.append(triple("cheese", "tacos", 75))
+triples.append(triple("cheese", "is", "tacos", 75))
 frequencies["cheese", "tacos"] = 75
-triples.append(triple("meat", "tacos", 75))
+triples.append(triple("meat", "is", "tacos", 75))
 frequencies["meat", "tacos"] = 75
 
-triples.append(triple("spagehti", "pasta", 100))
+triples.append(triple("spagehti", "is", "pasta", 100))
 frequencies["spagehti", "pasta"] = 100
 
-triples.append(triple("pasta", "tamaoto sauce", 60))
+triples.append(triple("pasta", "is", "tamaoto sauce", 60))
 frequencies["pasta", "tamaoto sauce"] = 60
 
-triples.append(triple("food", "snacks", 200))
+triples.append(triple("food", "is", "snacks", 200))
 frequencies["food", "snacks"] = 200
-triples.append(triple("food", "pasta", 150))
+triples.append(triple("food", "is", "pasta", 150))
 frequencies["food", "pasta"] = 150
-triples.append(triple("food", "tacos", 150))
+triples.append(triple("food", "is", "tacos", 150))
 frequencies["food", "tacos"] = 150
-triples.append(triple("food", "pizza", 100))
+triples.append(triple("food", "is", "pizza", 100))
 frequencies["food", "pizza"] = 100
 
-triples.append(triple("candy", "snacks", 100))
+triples.append(triple("candy", "is", "snacks", 100))
 frequencies["candy", "snacks"] = 100
-triples.append(triple("oranges", "snacks", 70))
+triples.append(triple("oranges", "is", "snacks", 70))
 frequencies["oranges", "snacks"] = 70
 
 
