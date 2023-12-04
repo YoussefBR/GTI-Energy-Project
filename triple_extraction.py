@@ -34,20 +34,19 @@ def findPOS(pos):
     else:
         return ''
 
-# pdf = open("2020 RECS_Methodology Report.pdf", 'rb')
-# pdfreader=PyPDF2.PdfReader(pdf)
-
-# numPages = len(pdfreader.pages)
-# text = []
-# for pageNum in range(numPages):
-#     page = pdfreader.pages[pageNum]
-#     text.append(page.extract_text())
-
-# text = " ".join(text)
-# with open("converted_pdf.txt", 'w') as f:
-#     f.write(text)
-
 def main():
+    pdf = open("2020 RECS_Methodology Report.pdf", 'rb')
+    pdfreader=PyPDF2.PdfReader(pdf)
+
+    numPages = len(pdfreader.pages)
+    text = []
+    for pageNum in range(numPages):
+        page = pdfreader.pages[pageNum]
+        text.append(page.extract_text())
+
+    text = " ".join(text)
+    with open("converted_pdf.txt", 'w') as f:
+        f.write(text)
     # get all the words in the text
     words = word_tokenize(text)
 
