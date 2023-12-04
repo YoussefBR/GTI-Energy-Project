@@ -33,19 +33,44 @@ def findPOS(pos):
         return 'v'
     else:
         return ''
+    
+def convertPDF():
+    pdf = open("2020 RECS_Methodology Report.pdf", 'rb')
+    pdfreader=PyPDF2.PdfReader(pdf)
+    numPages = len(pdfreader.pages)
+    text = []
 
-# pdf = open("2020 RECS_Methodology Report.pdf", 'rb')
-# pdfreader=PyPDF2.PdfReader(pdf)
+    for pageNum in range(numPages):
+        page = pdfreader.pages[pageNum]
+        text.append(page.extract_text())
 
-# numPages = len(pdfreader.pages)
-# text = []
-# for pageNum in range(numPages):
-#     page = pdfreader.pages[pageNum]
-#     text.append(page.extract_text())
+    text = " ".join(text)
+    with open("converted_pdf.txt", 'w') as f:
+        f.write(text)
 
-# text = " ".join(text)
-# with open("converted_pdf.txt", 'w') as f:
-#     f.write(text)
+def getAllTriples(lemmatized_with_pos: list) -> list:
+    triples = []
+    length = len(lemmatized_with_pos) - 2
+    for i in range(length):
+        word1, pos1 = lemmatized_with_pos[i]
+        if pos1[0:2] == "NN":
+            word2, pos2 = lemmatized_with_pos[i+1]
+            if pos2[0:2] == "VB":
+                word3, pos3 = lemmatized_with_pos[i+2]
+                if pos3[0:2] == "NN":
+                    triples.append((word1, word2, word3))
+    return triples
+
+def getMostCommonWords(lemmatized_with_pos: list) -> dict:
+    words, poss = zip(*lemmatized_with_pos)
+    word_freq = {}
+    for word in words:
+        if word in word_freq:
+            count = word_freq[word]
+            word_freq.update({word: count + 1})
+        else:
+            word_freq.update({word: 1})
+    return word_freq
 
 def main():
     # get all the words in the text
@@ -63,27 +88,12 @@ def main():
 
     # chunk data
     triples = []
-    length = len(lemmatized_with_pos) - 2
-    for i in range(length):
-        word1, pos1 = lemmatized_with_pos[i]
-        if pos1[0:2] == "NN":
-            word2, pos2 = lemmatized_with_pos[i+1]
-            if pos2[0:2] == "VB":
-                word3, pos3 = lemmatized_with_pos[i+2]
-                if pos3[0:2] == "NN":
-                    triples.append((word1, word2, word3))
-    # print(triples)
+    triples = getAllTriples(lemmatized_with_pos)
 
     # find most common words
-    words, poss = zip(*lemmatized_with_pos)
     word_freq = {}
-    for word in words:
-        if word in word_freq:
-            count = word_freq[word]
-            word_freq.update({word: count + 1})
-        else:
-            word_freq.update({word: 1})
-
+    word_freq = getMostCommonWords(lemmatized_with_pos)
+    
     # right now household and housing are considered seperate words, in a more optimized system we'd probably find some way of throwing these two in the same category.
     words_by_freq = [ (word, freq) for word, freq in word_freq.items() ]
     words_by_freq = sorted(words_by_freq, key=get_freq, reverse=True)
@@ -115,4 +125,3 @@ def main():
             word1, word2, word3 = triple
             triple_str = str(word1) + " " + str(word2) + " " + str(word3)
             trip_file.write(triple_str + " " + str(score) + "\n")
-
