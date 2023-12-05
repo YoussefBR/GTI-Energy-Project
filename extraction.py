@@ -33,13 +33,13 @@ def findPOS(pos):
         return 'v'
     else:
         return ''
-
-def main():
+    
+def convertPDF():
     pdf = open("2020 RECS_Methodology Report.pdf", 'rb')
     pdfreader=PyPDF2.PdfReader(pdf)
-
     numPages = len(pdfreader.pages)
     text = []
+
     for pageNum in range(numPages):
         page = pdfreader.pages[pageNum]
         text.append(page.extract_text())
@@ -47,7 +47,34 @@ def main():
     text = " ".join(text)
     with open("converted_pdf.txt", 'w') as f:
         f.write(text)
-    # get all the words in the text
+    return text
+
+def getAllTriples(lemmatized_with_pos: list) -> list:
+    triples = []
+    length = len(lemmatized_with_pos) - 2
+    for i in range(length):
+        word1, pos1 = lemmatized_with_pos[i]
+        if pos1[0:2] == "NN":
+            word2, pos2 = lemmatized_with_pos[i+1]
+            if pos2[0:2] == "VB":
+                word3, pos3 = lemmatized_with_pos[i+2]
+                if pos3[0:2] == "NN":
+                    triples.append((word1, word2, word3))
+    return triples
+
+def getWordFreq(lemmatized_with_pos: list) -> dict:
+    words, poss = zip(*lemmatized_with_pos)
+    word_freq = {}
+    for word in words:
+        if word in word_freq:
+            count = word_freq[word]
+            word_freq.update({word: count + 1})
+        else:
+            word_freq.update({word: 1})
+    return word_freq
+
+def main():
+    text = convertPDF()
     words = word_tokenize(text)
 
     # filter out the stop words
@@ -62,31 +89,13 @@ def main():
 
     # chunk data
     triples = []
-    length = len(lemmatized_with_pos) - 2
-    for i in range(length):
-        word1, pos1 = lemmatized_with_pos[i]
-        if pos1[0:2] == "NN":
-            word2, pos2 = lemmatized_with_pos[i+1]
-            if pos2[0:2] == "VB":
-                word3, pos3 = lemmatized_with_pos[i+2]
-                if pos3[0:2] == "NN":
-                    triples.append((word1, word2, word3))
-    # print(triples)
+    triples = getAllTriples(lemmatized_with_pos)
 
     # find most common words
-    words, poss = zip(*lemmatized_with_pos)
     word_freq = {}
-    for word in words:
-        if word in word_freq:
-            count = word_freq[word]
-            word_freq.update({word: count + 1})
-        else:
-            word_freq.update({word: 1})
-
-    # right now household and housing are considered seperate words, in a more optimized system we'd probably find some way of throwing these two in the same category.
+    word_freq = getWordFreq()
     words_by_freq = [ (word, freq) for word, freq in word_freq.items() ]
     words_by_freq = sorted(words_by_freq, key=get_freq, reverse=True)
-    # print(words_by_freq)
 
     # grade each triple based on word frequency
     graded_triples = []
@@ -105,17 +114,20 @@ def main():
     for triple, score in triples_by_score:
         if "recs" not in triple:
             filtered_triples_scored.append((triple, score))
-    # print(filtered_triples_scored)
+    print(filtered_triples_scored)
 
-    gt_length = len(filtered_triples_scored)
+    gt_length = len(triples_by_score)
     with open("triples.txt", "w") as trip_file:
         trip_file.write(str(gt_length) + "\n")
-        for triple, score in filtered_triples_scored:
+        for triple, score in triples_by_score:
             word1, word2, word3 = triple
             triple_str = str(word1) + " " + str(word2) + " " + str(word3)
             trip_file.write(triple_str + " " + str(score) + "\n")
-        
 
+    with open("words_by_freq.txt", "w") as word_freq_file:
+        for word, freq in words_by_freq:
+            word_freq_file.write(word + " " + freq + "\n")
+    
 def getTriples() -> list:
     triples = []
     with open("triples.txt") as triples_file:
@@ -127,3 +139,14 @@ def getTriples() -> list:
             triples.append((triple, int(score[:-1])))
             line = triples_file.readline()
     return triples
+
+def getWordsByFreq() -> list:
+    words_by_freq = []
+    with open("words_by_freq.txt") as word_freq_file:
+        line = word_freq_file.readline()
+        while line != "":
+            word, score = line.split(" ")
+            score = int(score[:-1])
+            words_by_freq.append((word, score))
+    return words_by_freq
+
