@@ -16,9 +16,8 @@ extracted_triples = te.getTriples()
 triples = []
 frequencies = {}
 for e_triple in extracted_triples:
-    if e_triple[1] > 50:
-        triples.append(triple(e_triple[0][0], e_triple[0][1], e_triple[0][2], e_triple[1]))
-        frequencies[(e_triple[0][0], e_triple[0][2])] = e_triple[1]
+    triples.append(triple(e_triple[0][0], e_triple[0][1], e_triple[0][2], e_triple[1]))
+    frequencies[(e_triple[0][0], e_triple[0][2])] = e_triple[1]
 
 co_net, score = cn.find_best_network(triples, frequencies)
 
