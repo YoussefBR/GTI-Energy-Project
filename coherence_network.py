@@ -1,6 +1,6 @@
 import networkx as nx
 import random
-import math
+#import math
 
 class coherence_network:
     def __init__(self, graph, center):
