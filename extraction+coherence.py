@@ -23,8 +23,9 @@ co_net, score = cn.find_best_network(triples, frequencies)
 
 print("center:", {co_net.center}, "score:", score)
 
+pos = nx.spring_layout(co_net.graph)
 # Draw the graph
-nx.draw(co_net.graph, with_labels=True, node_color='skyblue', node_size=700, font_size=20)
+nx.draw(co_net.graph, pos, with_labels=True, node_color='skyblue', node_size=700, font_size=20)
 
 # Show the plot
 plt.show()
