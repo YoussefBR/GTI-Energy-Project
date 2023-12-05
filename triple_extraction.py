@@ -74,10 +74,7 @@ def getWordFreq(lemmatized_with_pos: list) -> dict:
     return word_freq
 
 def main():
-    text = ""
-    # get all the words in the text
-    with open("converted_pdf.txt") as pdf:
-        text = pdf.read()
+    text = convertPDF()
 
     # filter out the stop words
     stop_words = set(stopwords.words("english"))
