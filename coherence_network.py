@@ -131,6 +131,7 @@ def crossover(parent1, parent2):
         add_t_edge(G2, edges2[0])
     # add edges to child graphs, for each edge, pick an edge from each parent, 80% chance p1->c1 and p2->c2 for each edge and 20% chance p1->c2 and p2->c1
     if len1 > len2:
+        # pick 1 for each until all edges in shorter graph are used up
         for x in range(1, len2):
             if random.random() > .2:
                 add_t_edge(G1, edges1[x])
@@ -138,13 +139,14 @@ def crossover(parent1, parent2):
             else:
                 add_t_edge(G1, edges2[x])
                 add_t_edge(G2, edges1[x])
-        # after all nodes in shorter graph used
+        # after all nodes in shorter graph used, 80% chance p1->c1, 20% p1->c2
         for x in range(len2, len1):
             if random.random() > .2:
                 add_t_edge(G1, edges1[x])
             else:
                 add_t_edge(G2, edges1[x])
     else:
+        # pick 1 for each until all edges in shorter graph are used up
         for x in range(1, len1):
             if random.random() > .2:
                 add_t_edge(G1, edges1[x])
@@ -152,7 +154,7 @@ def crossover(parent1, parent2):
             else:
                 add_t_edge(G1, edges2[x])
                 add_t_edge(G2, edges1[x])
-        # after all nodes in shorter graph used
+        # after all nodes in shorter graph used, 80% chance p2->c2, 20% p2->c1
         for x in range(len2, len1):
             if random.random() > .2:
                 add_t_edge(G2, edges2[x])
@@ -160,6 +162,7 @@ def crossover(parent1, parent2):
                 add_t_edge(G1, edges2[x])
     child1 = coherence_network(G1, parent1.center)
     child2 = coherence_network(G2, parent2.center)
+    # find weights of child graphs and prune node depth > 3
     give_weights(child1)
     give_weights(child2)
     return(child1, child2)
@@ -169,11 +172,13 @@ def find_best_network(triples, frequencies, trip_dict):
     best_network = None
     best_score = 0
     first = True
-    networks = [] # tracks networks and score
-    for x in range(1000):
-        # fills out preiouvsly held 40 networks
+    networks = [] # tracks networks and score of each network
+    #
+    for x in range(100):
+        # creates an initial 80 networks to add to population
         if first:
             for y in range(80):
+                # creates 5 networks and runs a quick tourney to find the best one and adds that to the population
                 for z in range(5):
                     network = build_network(triples, trip_dict)
                     score = netwowk_score(network.graph, frequencies)
@@ -182,8 +187,10 @@ def find_best_network(triples, frequencies, trip_dict):
                         best_score = score
                 networks.append((best_network, best_score))
                 best_score = 0
-        # finds 10 new coherence networks
+            first = False
+        # creates 20 new coherence networks in each iteration, bringing population to 100
         for y in range(20):
+            # creates 5 networks and runs a quick tourney to find the best one and adds that to the population
             for z in range(5):
                 network = build_network(triples, trip_dict)
                 score = netwowk_score(network.graph, frequencies)
@@ -192,17 +199,18 @@ def find_best_network(triples, frequencies, trip_dict):
                     best_score = score
             networks.append((best_network, best_score))
             best_score = 0
+        # create the next generation of networks by crossing over randomly paired up networks in the population
         random.shuffle(networks)
-        # crossover
         next = []
         for y in range(50):
             children = crossover(networks[2 * y][0], networks[(2 * y) + 1][0])
             next.append(children[0])
             next.append(children[1])
-        # find best 40 to cotinue next iteration
+        # find best 80 chldren to cotinue next iteration and eliminates 20 worst ones from gene pool
         networks = []
         for co_net in next:
             networks.append((co_net, netwowk_score(co_net.graph, frequencies)))
         networks = sorted(networks, key=lambda x: x[1])
         networks = networks[20:]
+    # return highest scoring network
     return networks[79]
