@@ -71,12 +71,7 @@ def getWordFreq(lemmatized_with_pos: list) -> dict:
             word_freq.update({word: count + 1})
         else:
             word_freq.update({word: 1})
-    words_by_freq = [ (word, freq) for word, freq in word_freq.items() ]
-    words_by_freq = sorted(words_by_freq, key=get_freq, reverse=True)
-    return words_by_freq
-    words_by_freq = [ (word, freq) for word, freq in word_freq.items() ]
-    words_by_freq = sorted(words_by_freq, key=get_freq, reverse=True)
-    return words_by_freq
+    return word_freq
 
 def main():
     text = convertPDF()
@@ -98,9 +93,14 @@ def main():
 
     # find most common words
     word_freq = {}
-    word_freq = getWordFreq()
+    word_freq = getWordFreq(lemmatized_with_pos)
     words_by_freq = [ (word, freq) for word, freq in word_freq.items() ]
     words_by_freq = sorted(words_by_freq, key=get_freq, reverse=True)
+
+    # right now household and housing are considered seperate words, in a more optimized system we'd probably find some way of throwing these two in the same category.
+    # words_by_freq = [ (word, freq) for word, freq in word_freq.items() ]
+    # words_by_freq = sorted(words_by_freq, key=get_freq, reverse=True)
+    # print(words_by_freq)
 
     # grade each triple based on word frequency
     graded_triples = []
