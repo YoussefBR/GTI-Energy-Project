@@ -8,58 +8,78 @@ class coherence_network:
         self.center = center
 
 # adds next node and recursively calls at 50% chance, then out at 50% chance
-def next_connection(concepts, num_concepts, count, order, prev_concept, weight, G):
+def next_connection(triples, num_triples, td, prev_concept, concept, weight, G):
     
     if weight < .1:
         return
     
-    next_concept = concepts[order[count[0]]]
-    G.add_node(next_concept)
-    G.add_edge(prev_concept, next_concept, weight=weight)
-
-    count[0] += 1
-
-    if count[0] < num_concepts and random.random() > 0.5:
-        next_connection(concepts, num_concepts, count, order, next_concept, weight * 0.5, G)
-
-    # 33% chance of continuing horizontally off the previous node
-    while count[0] < num_concepts and random.random() < 0.33:
-        next_connection(concepts, num_concepts, count, order, prev_concept, weight, G)
-
-# builds random coherence network from given concepts
-def build_network(concepts, num_concepts):
-    G = nx.Graph()
-
-    # Randomly mix up the order of concepts added to the network
-    top_20_percent = math.ceil((num_concepts * .2))
-    order = list(range(top_20_percent))
+    num_to_add = random.randint(1, len(td[concept]))
+    order = list(range(len(td[concept])))
     random.shuffle(order)
 
+    #next_concept = concepts[order[count[0]]]
+    #G.add_node(next_concept)
+    
+    for x in range(num_to_add):
+
+        if not td[concept][order[x]] == prev_concept:
+
+            G.add_edge(concept, td[concept][order[x]], weight = weight)
+
+    #count[0] += 1
+
+            if random.random() > 0.5:
+                next_connection(triples, num_triples, td, concept, td[concept][order[x]], weight * 0.5, G)
+
+    # 33% chance of continuing horizontally off the previous node
+    #while count[0] < num_concepts and random.random() < 0.33:
+    #    next_connection(concepts, num_concepts, count, order, prev_concept, weight, G)
+
+# builds random coherence network from given concepts
+def build_network(triples, triple_dict):
+    
+    G = nx.Graph()
+    num_triples = len(triples)
+
+    # Randomly mix up the order of concepts added to the network
+    #top_20_percent = math.ceil((num_triples * .2))
+    #order = list(range(top_20_percent))
+    #random.shuffle(order)
+
     # Add center
-    center_concept = concepts[order[0]]
+    if random.random() > .5:
+        center_concept = triples[(random.randint(0,int(num_triples * .2)))].subject
+    else:
+        center_concept = triples[(random.randint(0,int(num_triples * .2)))].object
     G.add_node(center_concept)
     co_net = coherence_network(G, center_concept)
 
-    order = list(range(num_concepts))
+    #order = list(range(num_triples))
 
     # Tracking
-    count = [1]  # to track count of concepts, as a list to update cross-function
-    cont = 2  # Decides whether to continue or not at 80% chance, initialized to continue
+    #count = [1]  # to track count of concepts, as a list to update cross-function
+    #cont = 2  # Decides whether to continue or not at 80% chance, initialized to continue
 
-    while count[0] < num_concepts and cont > 0:
+    num_to_add = random.randint(1, len(triple_dict[center_concept]))
+    order = list(range(len(triple_dict[center_concept])))
+    random.shuffle(order)
+
+    for x in range(num_to_add):
         
-        next_concept = concepts[order[count[0]]]
-        G.add_node(next_concept)
-        G.add_edge(center_concept, next_concept, weight=1)
+        G.add_edge(center_concept, triple_dict[center_concept][order[x]], weight = 1)
 
-        count[0] += 1
+        #next_concept = concepts[order[count[0]]]
+        #G.add_node(next_concept)
+        #G.add_edge(center_concept, next_concept, weight=1)
+
+        #count[0] += 1
 
         # 67% chance to add a random node onto the last node
-        while count[0] < num_concepts and random.random() > 0.33:
-            next_connection(concepts, num_concepts, count, order, next_concept, 0.5, G)
+        if random.random() > 0.33:
+            next_connection(triples, num_triples, triple_dict, center_concept, triple_dict[center_concept][order[x]], 0.5, G)
 
         # 80% chance to continue
-        cont = random.randint(0, 4)
+        #cont = random.randint(0, 4)
 
     return co_net
 
@@ -175,25 +195,25 @@ def crossover(parent1, parent2):
     return(child1, child2)
 
 #finds the best coherence network by randomlmy generating networks based off the triples, scoring them on their coherence and optimzing the best one with the genetic algorithm
-def find_best_network(triples, frequencies):
+def find_best_network(triples, frequencies, trip_dict):
     # make a list of concepts
-    concepts = []
-    for triple in triples:
-        if triple.subject not in concepts:
-            concepts.append(triple.subject)
-        if triple.object not in concepts:
-            concepts.append(triple.object)
+    #concepts = []
+    #for triple in triples:
+    #    if triple.subject not in concepts:
+    #        concepts.append(triple.subject)
+    #    if triple.object not in concepts:
+    #        concepts.append(triple.object)
     # find best coherence network
     best_network = None
     best_score = 0
     first = True
     networks = [] # tracks networks and score
-    for x in range(100):
+    for x in range(10):
         # fills out preiouvsly held 40 networks
         if first:
             for y in range(80):
                 for z in range(5):
-                    network = build_network(concepts, len(concepts))
+                    network = build_network(triples, trip_dict)
                     score = netwowk_score(network.graph, frequencies)
                     if score > best_score:
                         best_network = network
@@ -203,7 +223,7 @@ def find_best_network(triples, frequencies):
         # finds 10 new coherence networks
         for y in range(20):
             for z in range(5):
-                network = build_network(concepts, len(concepts))
+                network = build_network(triples, trip_dict)
                 score = netwowk_score(network.graph, frequencies)
                 if score > best_score:
                     best_network = network
