@@ -44,7 +44,16 @@ def gradingRules(word1, word2, word3, freq_score) -> int:
         freq_score /= 2
     if(word1 == word3):
         freq_score *= -1
+        return int(freq_score)
+    if(word2 == "data"):
+        freq_score *= -1
+        return int(freq_score)
+    if(word2 == "ing"):
+        freq_score *= -1
+        return int(freq_score)
     if(word2 == "sample"):
+        freq_score /= 2
+    if(word1 == "estimate" or word3 == "estimate"):
         freq_score /= 2
     return int(freq_score)
     
