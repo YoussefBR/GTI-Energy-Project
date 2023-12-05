@@ -8,6 +8,10 @@ class coherence_network:
 
 # adds next node and recursively calls at 50% chance, then out at 50% chance
 def next_connection(concepts, num_concepts, count, order, prev_concept, weight, G):
+    
+    if weight < .1:
+        return
+    
     next_concept = concepts[order[count[0]]]
     G.add_node(next_concept)
     G.add_edge(prev_concept, next_concept, weight=weight)
@@ -56,15 +60,22 @@ def build_network(concepts, num_concepts):
     return co_net
 
 # scores coherence of network 
-def netwowk_score(network, frequencies):
+def netwowk_score(graph, frequencies):
     score = 0
     # assuming frequencies is dictionary such that {(concept1, concept2) : frequency_of_ideas_in_triples}, score becomes sum of freuencies with wieght based on how far from center
-    for edge in network.graph.edges:
+    nodes_to_remove = []
+    for edge in graph.edges:
         node1, node2 = edge
+        if graph[node1][node2]['weight'] == 0:
+            if node1 not in nodes_to_remove:
+                nodes_to_remove.append(node1)
+            if node2 not in nodes_to_remove:
+                nodes_to_remove.append(node2)
         if (node1, node2) in frequencies:
-            score += network.graph[node1][node2]['weight'] * frequencies[(node1, node2)]
+            score += graph[node1][node2]['weight'] * frequencies[(node1, node2)]
         if (node2, node1) in frequencies:
-            score += network.graph[node1][node2]['weight'] * frequencies[(node2, node1)]
+            score += graph[node1][node2]['weight'] * frequencies[(node2, node1)]
+    graph.remove_nodes_from(nodes_to_remove)
     return score
 
 # adds edge to graph given tuple of 2 nodes
@@ -76,6 +87,7 @@ def add_t_edge(G, nodes):
 
 # helper function that recursively calls for give_weights
 def rec_weights(G, node, prev_node, weight):
+    nodes_to_remove = []
     for edge in G.edges(node):
         n1, n2 = edge
         if not (n1 == prev_node or n2 == prev_node):
@@ -83,21 +95,27 @@ def rec_weights(G, node, prev_node, weight):
                 G[n1][n2]['weight'] = weight
                 # find weights for next node
                 if n1 == node:
-                    rec_weights(G, n2, node, weight * .5)
+                    nodes_to_remove.extend(rec_weights(G, n2, node, weight * .5))
                 else:
-                    rec_weights(G, n1, node, weight * .5)
-    return
+                    nodes_to_remove.extend(rec_weights(G, n1, node, weight * .5))
+    if weight == .125:
+        nodes_to_remove.append(node)
+    return nodes_to_remove
 
 # give weights to edges based on location in network
 def give_weights(network):
+    nodes_to_remove = []
     for edge in network.graph.edges(network.center):
         n1, n2 = edge
         network.graph[n1][n2]['weight'] = 1
         # find weights for connceted nodes
         if n1 == network.center:
-            rec_weights(network.graph, n2, network.center, .5)
+            nodes_to_remove = rec_weights(network.graph, n2, network.center, .5)
         else:
-            rec_weights(network.graph, n1, network.center, .5)
+            nodes_to_remove = rec_weights(network.graph, n1, network.center, .5)
+    for node in nodes_to_remove:
+        if network.graph.has_node(node):
+            network.graph.remove_node(node)
     return
 
 # does crossover of networks
@@ -113,8 +131,10 @@ def crossover(parent1, parent2):
     # add first center edge to each to ensure center is carried correctly
     len1 = len(edges1)
     len2 = len(edges2)
-    add_t_edge(G1, edges1[0])
-    add_t_edge(G2, edges2[0])
+    if len1 > 0:
+        add_t_edge(G1, edges1[0])
+    if len2 > 0:
+        add_t_edge(G2, edges2[0])
     # add edges 80% p1->c1 and p2->c2 for each edge and 20% chance p1->c2 and p2->c1
     if len1 > len2:
         for x in range(1, len2):
@@ -164,13 +184,13 @@ def find_best_network(triples, frequencies):
     best_score = 0
     first = True
     networks = [] # tracks networks and score
-    for x in range(10):
+    for x in range(1000):
         # fills out preiouvsly held 40 networks
         if first:
             for y in range(80):
                 for z in range(5):
                     network = build_network(concepts, len(concepts))
-                    score = netwowk_score(network, frequencies)
+                    score = netwowk_score(network.graph, frequencies)
                     if score > best_score:
                         best_network = network
                         best_score = score
@@ -180,7 +200,7 @@ def find_best_network(triples, frequencies):
         for y in range(20):
             for z in range(5):
                 network = build_network(concepts, len(concepts))
-                score = netwowk_score(network, frequencies)
+                score = netwowk_score(network.graph, frequencies)
                 if score > best_score:
                     best_network = network
                     best_score = score
@@ -196,7 +216,7 @@ def find_best_network(triples, frequencies):
         # find best 40 to cotinue next iteration
         networks = []
         for co_net in next:
-            networks.append((co_net, netwowk_score(co_net, frequencies)))
+            networks.append((co_net, netwowk_score(co_net.graph, frequencies)))
         networks = sorted(networks, key=lambda x: x[1])
         networks = networks[20:]
     return networks[79]
