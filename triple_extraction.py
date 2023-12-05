@@ -47,6 +47,7 @@ def convertPDF():
     text = " ".join(text)
     with open("converted_pdf.txt", 'w') as f:
         f.write(text)
+    return text
 
 def getAllTriples(lemmatized_with_pos: list) -> list:
     triples = []
@@ -73,8 +74,10 @@ def getWordFreq(lemmatized_with_pos: list) -> dict:
     return word_freq
 
 def main():
+    text = ""
     # get all the words in the text
-    words = word_tokenize(text)
+    with open("converted_pdf.txt") as pdf:
+        text = pdf.read()
 
     # filter out the stop words
     stop_words = set(stopwords.words("english"))
