@@ -75,6 +75,7 @@ def getWordFreq(lemmatized_with_pos: list) -> dict:
 
 def main():
     text = convertPDF()
+    words = word_tokenize(text)
 
     # filter out the stop words
     stop_words = set(stopwords.words("english"))
