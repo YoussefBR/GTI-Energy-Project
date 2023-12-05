@@ -71,7 +71,12 @@ def getWordFreq(lemmatized_with_pos: list) -> dict:
             word_freq.update({word: count + 1})
         else:
             word_freq.update({word: 1})
-    return word_freq
+    words_by_freq = [ (word, freq) for word, freq in word_freq.items() ]
+    words_by_freq = sorted(words_by_freq, key=get_freq, reverse=True)
+    return words_by_freq
+    words_by_freq = [ (word, freq) for word, freq in word_freq.items() ]
+    words_by_freq = sorted(words_by_freq, key=get_freq, reverse=True)
+    return words_by_freq
 
 def main():
     text = convertPDF()
