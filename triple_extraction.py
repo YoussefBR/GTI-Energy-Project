@@ -37,7 +37,7 @@ def findPOS(pos):
         return ''
 
 def gradingRules(word1, word2, word3, freq_score) -> int:
-    # bad
+    # bad connections
     if(word1 == word3 and freq_score > 0):
         freq_score *= -1
     if(word2 == "data" and freq_score > 0):
@@ -48,6 +48,7 @@ def gradingRules(word1, word2, word3, freq_score) -> int:
         freq_score *= -1
     if freq_score < 0:
         return int(freq_score)
+    # good connections
     elec_included = word1 == "electricity" or word3 == "electricity"
     if(word2 == "use" or elec_included):
         freq_score *= 2
