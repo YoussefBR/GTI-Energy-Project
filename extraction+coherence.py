@@ -11,8 +11,7 @@ class triple:
         self.frequency = frequency
 
 te.main()
-extracted_triples = te.getTriples()
-words_by_freq = te.getWordsByFreq()
+extracted_triples = te.getTriples()\
 
 triples = []
 frequencies = {}
