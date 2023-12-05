@@ -34,6 +34,15 @@ def findPOS(pos):
     else:
         return ''
 
+def gradingRules(word1, word2, word3, freq_score) -> int:
+    elec_included = word1 == "electricity" or word3 == "electricity"
+    if(word2 == "use" or elec_included):
+        freq_score *= 2
+    if(word1 == "data" or word3 == "data"):
+        freq_score /= 2
+    return freq_score
+    
+
 def main():
     pdf = open("2020 RECS_Methodology Report.pdf", 'rb')
     pdfreader=PyPDF2.PdfReader(pdf)
@@ -96,6 +105,7 @@ def main():
         freq_score += word_freq[word1]
         freq_score += word_freq[word2]
         freq_score += word_freq[word3]
+        freq_score = gradingRules(word1, word2, word3, freq_score)
         graded_triples.append((triple, freq_score))
     # print(graded_triples)
 
@@ -105,7 +115,7 @@ def main():
     for triple, score in triples_by_score:
         if "recs" not in triple:
             filtered_triples_scored.append((triple, score))
-    # print(filtered_triples_scored)
+    print(filtered_triples_scored)
 
     gt_length = len(filtered_triples_scored)
     with open("triples.txt", "w") as trip_file:
