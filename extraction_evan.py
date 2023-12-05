@@ -12,6 +12,7 @@ class triple:
 
 te.main()
 extracted_triples = te.getTriples()
+connections = te.getWordConnections()
 
 triples = []
 frequencies = {}
@@ -19,7 +20,7 @@ for e_triple in extracted_triples:
     triples.append(triple(e_triple[0][0], e_triple[0][1], e_triple[0][2], e_triple[1]))
     frequencies[(e_triple[0][0], e_triple[0][2])] = e_triple[1]
 
-co_net, score = cn.find_best_network(triples, frequencies)
+co_net, score = cn.find_best_network(triples, frequencies, connections)
 
 print("center:", {co_net.center}, "score:", score)
 
