@@ -42,8 +42,8 @@ def gradingRules(word1, word2, word3, freq_score) -> int:
         freq_score *= -1
     if(word2 == "data" and freq_score > 0):
         freq_score *= -1
-    if(word2 == "ing" and freq_score > 0):
-        freq_score *= -1
+    # if(word2 == "ing" and freq_score > 0):
+    #     freq_score *= -1
     if((len(word1) < 3 or len(word3) < 3) and freq_score > 0):
         freq_score *= -1
     if freq_score < 0:
@@ -123,22 +123,6 @@ def main():
         freq_score += word_freq[word1]
         freq_score += word_freq[word2]
         freq_score += word_freq[word3]
-        
-        if word1 in word_connections:
-            word_connections[word1].append(word3)
-        else:
-            connections = []
-            connections.append(word3)
-            word_connections[word1] = connections
-        if word3 in word_connections:
-            word_connections[word3].append(word1)
-        else:
-            connections = []
-            connections.append(word1)
-            word_connections[word3] = connections
-        
-        freq_score = gradingRules(word1, word2, word3, freq_score)
-
         graded_triples.append((triple, freq_score))
     # print(graded_triples)
 
@@ -146,9 +130,23 @@ def main():
     # print(triples_by_score)
     filtered_triples_scored = []
     for triple, score in triples_by_score:
-        if "recs" not in triple:
+        word1, word2, word3 = triple
+        if "recs" not in triple and word1 != word3:
+            if word1 in word_connections:
+                word_connections[word1].append(word3)
+            else:
+                connections = []
+                connections.append(word3)
+                word_connections[word1] = connections
+            if word3 in word_connections:
+                word_connections[word3].append(word1)
+            else:
+                connections = []
+                connections.append(word1)
+                word_connections[word3] = connections
+            score = gradingRules(word1, word2, word3, score)
             filtered_triples_scored.append((triple, score))
-    print(filtered_triples_scored)
+    # print(filtered_triples_scored)
 
     gt_length = len(filtered_triples_scored)
     with open("triples.txt", "w") as trip_file:
@@ -174,5 +172,5 @@ def getTriples() -> list:
 def getWordConnections():
     return word_connections
 
-main()
+# main()
 # print(getWordConnections()['heat'])
