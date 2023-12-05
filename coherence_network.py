@@ -1,5 +1,6 @@
 import networkx as nx
 import random
+import math
 
 class coherence_network:
     def __init__(self, graph, center):
@@ -30,13 +31,16 @@ def build_network(concepts, num_concepts):
     G = nx.Graph()
 
     # Randomly mix up the order of concepts added to the network
-    order = list(range(num_concepts))
+    top_20_percent = math.ceil((num_concepts * .2))
+    order = list(range(top_20_percent))
     random.shuffle(order)
 
     # Add center
     center_concept = concepts[order[0]]
     G.add_node(center_concept)
     co_net = coherence_network(G, center_concept)
+
+    order = list(range(num_concepts))
 
     # Tracking
     count = [1]  # to track count of concepts, as a list to update cross-function
