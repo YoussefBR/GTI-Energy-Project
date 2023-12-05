@@ -10,7 +10,7 @@ class coherence_network:
 # adds next node and recursively calls at 50% chance, then out at 50% chance
 def next_connection(triples, num_triples, td, prev_concept, concept, weight, G):
     
-    if weight < .1:
+    if weight < .3:
         return
     
     num_to_add = random.randint(1, len(td[concept]))
@@ -122,7 +122,7 @@ def rec_weights(G, node, prev_node, weight):
                     nodes_to_remove.extend(rec_weights(G, n2, node, weight * .5))
                 else:
                     nodes_to_remove.extend(rec_weights(G, n1, node, weight * .5))
-    if weight == .125:
+    if weight == .25:
         nodes_to_remove.append(node)
     return nodes_to_remove
 
@@ -208,7 +208,7 @@ def find_best_network(triples, frequencies, trip_dict):
     best_score = 0
     first = True
     networks = [] # tracks networks and score
-    for x in range(10):
+    for x in range(1000):
         # fills out preiouvsly held 40 networks
         if first:
             for y in range(80):
