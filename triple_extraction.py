@@ -114,6 +114,10 @@ def main():
             word1, word2, word3 = triple
             triple_str = str(word1) + " " + str(word2) + " " + str(word3)
             trip_file.write(triple_str + " " + str(score) + "\n")
+
+    with open("words_by_freq.txt", "w") as word_freq_file:
+        for word, freq in words_by_freq:
+            word_freq_file.write(word + " " + freq + "\n")
         
 
 def getTriples() -> list:
@@ -127,3 +131,13 @@ def getTriples() -> list:
             triples.append((triple, int(score[:-1])))
             line = triples_file.readline()
     return triples
+
+def getWordsByFreq() -> list:
+    words_by_freq = []
+    with open("words_by_freq.txt") as word_freq_file:
+        line = word_freq_file.readline()
+        while line != "":
+            word, score = line.split(" ")
+            score = int(score[:-1])
+            words_by_freq.append((word, score))
+    return words_by_freq
