@@ -18,6 +18,8 @@ from nltk.stem import PorterStemmer
 # nltk.download('averaged_perceptron_tagger')
 # nltk.download('wordnet')
 
+word_connections = {}
+
 def get_freq(word_and_freq):
     return word_and_freq[1]
 
@@ -40,7 +42,7 @@ def gradingRules(word1, word2, word3, freq_score) -> int:
         freq_score *= 2
     if(word1 == "data" or word3 == "data"):
         freq_score /= 2
-    return freq_score
+    return int(freq_score)
     
 
 def main():
@@ -105,7 +107,22 @@ def main():
         freq_score += word_freq[word1]
         freq_score += word_freq[word2]
         freq_score += word_freq[word3]
+        
+        if word1 in word_connections:
+            word_connections[word1].append(word3)
+        else:
+            connections = []
+            connections.append(word3)
+            word_connections[word1] = connections
+        if word3 in word_connections:
+            word_connections[word3].append(word1)
+        else:
+            connections = []
+            connections.append(word1)
+            word_connections[word3] = connections
+        
         freq_score = gradingRules(word1, word2, word3, freq_score)
+
         graded_triples.append((triple, freq_score))
     # print(graded_triples)
 
@@ -115,7 +132,7 @@ def main():
     for triple, score in triples_by_score:
         if "recs" not in triple:
             filtered_triples_scored.append((triple, score))
-    print(filtered_triples_scored)
+    # print(filtered_triples_scored)
 
     gt_length = len(filtered_triples_scored)
     with open("triples.txt", "w") as trip_file:
@@ -137,3 +154,6 @@ def getTriples() -> list:
             triples.append((triple, int(score[:-1])))
             line = triples_file.readline()
     return triples
+
+def getWordConnections():
+    return word_connections
