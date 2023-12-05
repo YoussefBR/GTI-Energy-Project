@@ -10,7 +10,8 @@ class triple:
         self.object = object
         self.frequency = frequency
 
-extracted_triples = te.()
+te.main()
+extracted_triples = te.getTriples()
 
 triples = []
 frequencies = {}
