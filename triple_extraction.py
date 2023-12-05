@@ -105,7 +105,7 @@ def main():
     for triple, score in triples_by_score:
         if "recs" not in triple:
             filtered_triples_scored.append((triple, score))
-    print(filtered_triples_scored)
+    # print(filtered_triples_scored)
 
     gt_length = len(filtered_triples_scored)
     with open("triples.txt", "w") as trip_file:
@@ -122,12 +122,12 @@ def getTriples() -> list:
         line = triples_file.readline()
         line = triples_file.readline()
         while line != "":
-            print(line.split(" "))
             word1, word2, word3, score = line.split(' ')
             triple = (word1, word2, word3)
-            triples.append((triple, score))
+            triples.append((triple, int(score[:-1])))
             line = triples_file.readline()
     return triples
 
 main()
-getTriples()
+triples = getTriples()
+print(triples)
