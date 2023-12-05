@@ -184,7 +184,7 @@ def find_best_network(triples, frequencies):
     best_score = 0
     first = True
     networks = [] # tracks networks and score
-    for x in range(1000):
+    for x in range(100):
         # fills out preiouvsly held 40 networks
         if first:
             for y in range(80):
