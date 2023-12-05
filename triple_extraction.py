@@ -107,11 +107,23 @@ def main():
             filtered_triples_scored.append((triple, score))
     print(filtered_triples_scored)
 
-    gt_length = len(triples_by_score)
+    gt_length = len(filtered_triples_scored)
     with open("triples.txt", "w") as trip_file:
         trip_file.write(str(gt_length) + "\n")
-        for triple, score in triples_by_score:
+        for triple, score in filtered_triples_scored:
             word1, word2, word3 = triple
             triple_str = str(word1) + " " + str(word2) + " " + str(word3)
             trip_file.write(triple_str + " " + str(score) + "\n")
+
+def getTriples() -> list:
+    triples = []
+    with open(triples.txt) as triples_file:
+        line = triples_file.readline()
+        while line is not None:
+            line = triples_file.readline()
+            word1, word2, word3, score = line.split(' ')
+            triple = (word1, word2, word3)
+            triples.append((triple, score))
+    return triples
+
 
