@@ -117,7 +117,7 @@ def main():
 
     with open("words_by_freq.txt", "w") as word_freq_file:
         for word, freq in words_by_freq:
-            word_freq_file.write(word + " " + freq + "\n")
+            word_freq_file.write(word + " " + str(freq) + "\n")
         
 
 def getTriples() -> list:
