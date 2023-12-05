@@ -93,7 +93,7 @@ def main():
     # find most common words
     word_freq = {}
     word_freq = getMostCommonWords(lemmatized_with_pos)
-    
+
     # right now household and housing are considered seperate words, in a more optimized system we'd probably find some way of throwing these two in the same category.
     words_by_freq = [ (word, freq) for word, freq in word_freq.items() ]
     words_by_freq = sorted(words_by_freq, key=get_freq, reverse=True)

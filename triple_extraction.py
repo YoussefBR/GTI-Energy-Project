@@ -114,16 +114,20 @@ def main():
             word1, word2, word3 = triple
             triple_str = str(word1) + " " + str(word2) + " " + str(word3)
             trip_file.write(triple_str + " " + str(score) + "\n")
+        
 
 def getTriples() -> list:
     triples = []
-    with open(triples.txt) as triples_file:
+    with open("triples.txt") as triples_file:
         line = triples_file.readline()
-        while line is not None:
-            line = triples_file.readline()
+        line = triples_file.readline()
+        while line != "":
+            print(line.split(" "))
             word1, word2, word3, score = line.split(' ')
             triple = (word1, word2, word3)
             triples.append((triple, score))
+            line = triples_file.readline()
     return triples
 
-
+main()
+getTriples()
