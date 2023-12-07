@@ -10,6 +10,7 @@ class triple:
         self.object = object
         self.frequency = frequency
 
+# extract triples from file
 te.main()
 extracted_triples = te.getTriples()
 connections = te.getWordConnections()

@@ -8,7 +8,7 @@ class coherence_network:
         self.center = center
 
 # adds random number of edges to the node "concept"
-def next_connection(triples, num_triples, td, prev_concept, concept, weight, G):
+def next_connection(td, prev_concept, concept, weight, G):
      # sets node depth at 3
     if weight < .3:
         return
@@ -22,7 +22,7 @@ def next_connection(triples, num_triples, td, prev_concept, concept, weight, G):
             G.add_edge(concept, td[concept][order[x]], weight = weight)
             # 50% chance to add further connections to each node that is being added
             if random.random() > 0.5:
-                next_connection(triples, num_triples, td, concept, td[concept][order[x]], weight * 0.5, G)
+                next_connection(td, concept, td[concept][order[x]], weight * 0.5, G)
 
 # builds random coherence network from given triples
 def build_network(triples, triple_dict): 
@@ -44,7 +44,7 @@ def build_network(triples, triple_dict):
         G.add_edge(center_concept, triple_dict[center_concept][order[x]], weight = 1)
         # 67% chance to connections to each node, edge weights decrease by half for each increase depth
         if random.random() > 0.33:
-            next_connection(triples, num_triples, triple_dict, center_concept, triple_dict[center_concept][order[x]], 0.5, G)
+            next_connection(triple_dict, center_concept, triple_dict[center_concept][order[x]], 0.5, G)
     return co_net
 
 # scores coherence of network based off distance from center and their frequency value, as well as prunes unconnected nodes
