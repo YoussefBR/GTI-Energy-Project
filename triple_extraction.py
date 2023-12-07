@@ -35,6 +35,85 @@ def findPOS(pos):
         return 'v'
     else:
         return ''
+    
+def extractTriples(lemmatized_with_pos: list) -> list:
+    """From lemmatized words in document go through and pull out NN-VB-NN triples
+
+    Args:
+        lemmatized_with_pos (list): All words in the original document after they've been lemmatized and the stop words have been filtered out
+
+    Returns:
+        list: return a list of triples that fit the NN-VB-NN format
+    """    
+    triples = []
+    length = len(lemmatized_with_pos) - 2
+    for i in range(length):
+        word1, pos1 = lemmatized_with_pos[i]
+        word2, pos2 = lemmatized_with_pos[i+1]
+        word3, pos3 = lemmatized_with_pos[i+2]
+        if pos1[0:2] == "NN" and pos2[0:2] == "VB" and pos3[0:2] == "NN":
+            triples.append((word1, word2, word3))
+    return triples
+
+def getWordFreq(words: list) -> dict:
+    """Using words in document, count up all duplicates and put into a dictionary with the format {word: count}
+
+    Args:
+        words (list): A list of every word in the original document, lemmatized with the stopwords filtered out
+
+    Returns:
+        dict: A dictionary of every unique word in the document with the frequency in which it appears
+    """    
+    word_freq = {}
+    for word in words:
+        if word in word_freq:
+            count = word_freq[word]
+            word_freq.update({word: count + 1})
+        else:
+            word_freq.update({word: 1})
+    return word_freq
+
+def gradeTriples(triples: list, word_freq: dict) -> list:
+    """Grade triples by adding up the frequency of all three words in the triple
+
+    Args:
+        triples (list): The list of triples in the document
+        word_freq (dict): A dictionary of each unique word and it's frequency in the document
+
+    Returns:
+        list: A list of tuples where the first value is the triple and the second value is the score
+    """    
+    graded_triples = []
+    for triple in triples:
+        word1, word2, word3 = triple
+        freq_score = 0
+        freq_score += word_freq[word1]
+        freq_score += word_freq[word2]
+        freq_score += word_freq[word3]
+        graded_triples.append((triple, freq_score))
+    graded_triples = sorted(graded_triples, key=get_freq, reverse=True)
+    return graded_triples
+
+def filterScoredTriples(triples_by_score: list) -> list:
+    filtered_triples_scored = []
+    for triple, score in triples_by_score:
+        word1, word2, word3 = triple
+        if "recs" not in triple and word1 != word3:
+            if word1 in word_connections:
+                word_connections[word1].append(word3)
+            else:
+                connections = []
+                connections.append(word3)
+                word_connections[word1] = connections
+            if word3 in word_connections:
+                word_connections[word3].append(word1)
+            else:
+                connections = []
+                connections.append(word1)
+                word_connections[word3] = connections
+            score = gradingRules(word1, word2, word3, score)
+            filtered_triples_scored.append((triple, score))
+    return filtered_triples_scored
 
 def gradingRules(word1, word2, word3, freq_score) -> int:
     # bad connections
@@ -89,63 +168,26 @@ def main():
 
     # chunk data
     triples = []
-    length = len(lemmatized_with_pos) - 2
-    for i in range(length):
-        word1, pos1 = lemmatized_with_pos[i]
-        if pos1[0:2] == "NN":
-            word2, pos2 = lemmatized_with_pos[i+1]
-            if pos2[0:2] == "VB":
-                word3, pos3 = lemmatized_with_pos[i+2]
-                if pos3[0:2] == "NN":
-                    triples.append((word1, word2, word3))
+    triples = extractTriples(lemmatized_with_pos)
     # print(triples)
 
     # find most common words
     words, poss = zip(*lemmatized_with_pos)
     word_freq = {}
-    for word in words:
-        if word in word_freq:
-            count = word_freq[word]
-            word_freq.update({word: count + 1})
-        else:
-            word_freq.update({word: 1})
+    word_freq = getWordFreq(words)
 
     # right now household and housing are considered seperate words, in a more optimized system we'd probably find some way of throwing these two in the same category.
     words_by_freq = [ (word, freq) for word, freq in word_freq.items() ]
     words_by_freq = sorted(words_by_freq, key=get_freq, reverse=True)
     # print(words_by_freq)
 
-    # grade each triple based on word frequency
-    graded_triples = []
-    for triple in triples:
-        word1, word2, word3 = triple
-        freq_score = 0
-        freq_score += word_freq[word1]
-        freq_score += word_freq[word2]
-        freq_score += word_freq[word3]
-        graded_triples.append((triple, freq_score))
-    # print(graded_triples)
-
-    triples_by_score = sorted(graded_triples, key=get_freq, reverse=True)
+    # grade each triple based on word frequency then sort
+    scored_triples = []
+    scored_triples = gradeTriples(triples, word_freq)
     # print(triples_by_score)
+
     filtered_triples_scored = []
-    for triple, score in triples_by_score:
-        word1, word2, word3 = triple
-        if "recs" not in triple and word1 != word3:
-            if word1 in word_connections:
-                word_connections[word1].append(word3)
-            else:
-                connections = []
-                connections.append(word3)
-                word_connections[word1] = connections
-            if word3 in word_connections:
-                word_connections[word3].append(word1)
-            else:
-                connections = []
-                connections.append(word1)
-                word_connections[word3] = connections
-            score = gradingRules(word1, word2, word3, score)
-            filtered_triples_scored.append((triple, score))
+    filtered_triples_scored = filterScoredTriples(scored_triples)
     # print(filtered_triples_scored)
 
     gt_length = len(filtered_triples_scored)
