@@ -172,9 +172,9 @@ def find_best_network(triples, frequencies, trip_dict):
     best_network = None
     best_score = 0
     first = True
-    networks = [] # tracks networks and score of each network
+    networks = [] # tracks networks and score of each network in tuples
     #
-    for x in range(100):
+    for x in range(300):
         # creates an initial 80 networks to add to population
         if first:
             for y in range(80):
