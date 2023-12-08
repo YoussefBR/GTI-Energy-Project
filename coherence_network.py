@@ -71,8 +71,6 @@ def netwowk_score(graph, frequencies):
 # adds edge to graph given tuple of 2 nodes
 def add_t_edge(G, nodes):
     node1, node2 = nodes
-    G.add_node(node1)
-    G.add_node(node2)
     G.add_edge(node1, node2, weight = 0)
 
 # helper function that recursively calls for give_weights, and prunes nodes of depth > 3
@@ -174,7 +172,7 @@ def find_best_network(triples, frequencies, trip_dict):
     first = True
     networks = [] # tracks networks and score of each network in tuples
     #
-    for x in range(300):
+    for x in range(20000):
         # creates an initial 80 networks to add to population
         if first:
             for y in range(80):
