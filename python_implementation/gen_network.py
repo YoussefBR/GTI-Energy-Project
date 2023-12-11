@@ -1,7 +1,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt
-import coherence_network as cn
-import triple_extraction as te
+import python_implementation.coherence_network as cn
+import python_implementation.triple_extraction as te
 
 class triple:
      def __init__(self, subject, verb, object, frequency):

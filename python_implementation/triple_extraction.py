@@ -24,6 +24,14 @@ def get_freq(word_and_freq):
     return word_and_freq[1]
 
 def findPOS(pos):
+    """defines the general pos category based on the first two chars of the pos
+
+    Args:
+        pos (str): the part of speech of a word
+
+    Returns:
+        str: the part of speech category for a word
+    """    
     two = pos[:2]
     if(two == "NN"):
         return "n"
@@ -95,9 +103,18 @@ def gradeTriples(triples: list, word_freq: dict) -> list:
     return graded_triples
 
 def filterScoredTriples(triples_by_score: list) -> list:
+    """builds the dictionary of connections to a unique word from the scored triples list and returns a filtered version of the input list
+
+    Args:
+        triples_by_score (list): a list of tuples that contain a triple and its score
+
+    Returns:
+        list: a filtered version of the input list that doesn't contain connections to itself or connections involving recs
+    """    
     filtered_triples_scored = []
     for triple, score in triples_by_score:
         word1, word2, word3 = triple
+        # recs is the name of the company so we don't want to include it and connections to self are implied so should be removed
         if "recs" not in triple and word1 != word3:
             if word1 in word_connections:
                 word_connections[word1].append(word3)
@@ -111,18 +128,28 @@ def filterScoredTriples(triples_by_score: list) -> list:
                 connections = []
                 connections.append(word1)
                 word_connections[word3] = connections
-            score = gradingRules(word1, word2, word3, score)
+            score = gradingRules(triple, score)
             filtered_triples_scored.append((triple, score))
     return filtered_triples_scored
 
-def gradingRules(word1, word2, word3, freq_score) -> int:
+def gradingRules(triple: tuple, freq_score: int) -> int:
+    """takes in the triple and it's original score and modifies the score based on the grading rules
+
+    Args:
+        triple (tuple): the triple, follows the format NN-VB-NN
+        freq_score (int): the triple's score
+
+    Returns:
+        int: the adjusted score based on the grading rules
+    """    
+    word1, word2, word3 = triple
     # bad connections
-    if(word1 == word3 and freq_score > 0):
-        freq_score *= -1
+    # data should never be a verb, due to the frequency of this word and the limitations of the pdf converter it would occasionally be fraudulently put in as a verb
     if(word2 == "data" and freq_score > 0):
         freq_score *= -1
     # if(word2 == "ing" and freq_score > 0):
     #     freq_score *= -1
+    # This is in place of a dictionary check, generally any word under 3 characters ends up being a false read of something in the pdf
     if((len(word1) < 3 or len(word3) < 3) and freq_score > 0):
         freq_score *= -1
     if freq_score < 0:
@@ -131,6 +158,7 @@ def gradingRules(word1, word2, word3, freq_score) -> int:
     elec_included = word1 == "electricity" or word3 == "electricity"
     if(word2 == "use" or elec_included):
         freq_score *= 2
+    # data analysis is usually a big part of reports, and due to the sheer amount of time needed to discuss results in data it tends to skew the graph in favor it so we need to make data analysis less impactful
     if(word1 == "data" or word3 == "data"):
         freq_score /= 2
     if(word2 == "sample"):
@@ -141,6 +169,8 @@ def gradingRules(word1, word2, word3, freq_score) -> int:
     
 
 def main():
+    """converts the pdf to text and then performs natural langauage processing on the text to extract information in the form of triples and a dictionary of connections.
+    """    
     pdf = open("2020 RECS_Methodology Report.pdf", 'rb')
     pdfreader=PyPDF2.PdfReader(pdf)
 
@@ -200,6 +230,11 @@ def main():
         
 
 def getTriples() -> list:
+    """returns the triples extracted by main and stored into the triples.txt file
+
+    Returns:
+        list: a list of tuples containing triples and their scores
+    """    
     triples = []
     with open("triples.txt") as triples_file:
         line = triples_file.readline()
@@ -211,8 +246,10 @@ def getTriples() -> list:
             line = triples_file.readline()
     return triples
 
-def getWordConnections():
-    return word_connections
+def getWordConnections() -> dict:
+    """returns the dictionary of connections of each unique word which is set up in the main function
 
-# main()
-# print(getWordConnections()['heat'])
+    Returns:
+        dict: a dictionary that follows the format {unique word: list of connected words}
+    """    
+    return word_connections
